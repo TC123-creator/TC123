@@ -1,1209 +1,944 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌸 日本語學習樂園 🌸 第1-5課</title>
+<title>🌸 日語學習樂園 🌸 第1-6課 廣東話教程</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: 'Noto Sans JP', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  color: #333;
-  padding: 16px;
-}
-.container { max-width: 1100px; margin: 0 auto; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans HK','Noto Sans TC','Microsoft JhengHei',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;color:#333;padding:10px}
+.container{max-width:1000px;margin:0 auto}
+header{text-align:center;color:#fff;padding:16px 8px 8px}
+header h1{font-size:1.75em;text-shadow:2px 2px 8px rgba(0,0,0,.3);letter-spacing:1px}
+header p{font-size:.85em;opacity:.9;margin-top:4px}
+.score-bar{display:flex;justify-content:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+.score-item{background:rgba(255,255,255,.2);color:#fff;padding:5px 14px;border-radius:16px;font-size:.82em;backdrop-filter:blur(8px)}
+.score-item span{font-weight:bold;font-size:1.05em}
+.lesson-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;background:#fff;border-radius:14px;padding:7px;margin-bottom:8px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.lesson-btn{padding:10px 2px;border:2px solid #e0e0e0;background:#fff;border-radius:8px;cursor:pointer;font-size:.8em;font-family:inherit;font-weight:700;color:#555;transition:.2s}
+.lesson-btn:hover{border-color:#667eea}
+.lesson-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(102,126,234,.4)}
+.mode-bar{display:flex;gap:5px;background:#fff;border-radius:14px;padding:7px;margin-bottom:10px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.mode-btn{flex:1;padding:10px 3px;border:2px solid #e0e0e0;background:#fff;border-radius:8px;cursor:pointer;font-size:.8em;font-family:inherit;font-weight:700;color:#555;transition:.2s}
+.mode-btn:hover{border-color:#f5576c}
+.mode-btn.active{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(245,87,108,.4)}
+#content{background:#fff;border-radius:16px;padding:16px;box-shadow:0 10px 36px rgba(0,0,0,.15);min-height:420px}
+.section-title{font-size:1.12em;color:#2c3e50;margin-bottom:12px;padding-bottom:6px;border-bottom:3px solid #667eea;display:inline-block}
 
-/* Header */
-header {
-  text-align: center;
-  color: white;
-  padding: 24px 16px 16px;
-}
-header h1 {
-  font-size: 2.2em;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-  margin-bottom: 6px;
-  letter-spacing: 2px;
-}
-header p {
-  font-size: 1em;
-  opacity: 0.9;
-}
+/* 聽教程 */
+.listen-box{text-align:center}
+.play-btn{width:90px;height:90px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:2.2em;box-shadow:0 8px 25px rgba(102,126,234,.45);transition:.2s;margin:6px}
+.play-btn:hover{transform:scale(1.08)}
+.play-btn:active{transform:scale(.95)}
+.play-btn.playing{background:linear-gradient(135deg,#f5576c,#f093fb);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 8px 25px rgba(245,87,108,.45)}50%{box-shadow:0 8px 42px rgba(245,87,108,.85)}}
+.tut-sentence{background:#f8f9fa;border-radius:12px;padding:16px;margin:12px auto;max-width:740px;font-size:1.02em;line-height:1.8;color:#2c3e50;border-left:5px solid #667eea;text-align:left;min-height:72px;display:flex;align-items:center;cursor:pointer;transition:.2s}
+.tut-sentence:hover{background:#eef1ff}
+.tut-sentence.active-line{background:#fff8e1;border-left-color:#ffb300}
+.jp-inline{color:#e74c3c;font-weight:700}
+.progress-track{height:7px;background:#e0e0e0;border-radius:4px;max-width:740px;margin:10px auto;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);transition:width .3s;border-radius:4px}
+.listen-counter{color:#888;font-size:.82em;margin-top:4px}
+.ctrl-row{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:8px}
+.ctrl-btn{padding:8px 14px;border:2px solid #667eea;background:#fff;color:#667eea;border-radius:9px;cursor:pointer;font-family:inherit;font-size:.82em;font-weight:700;transition:.2s}
+.ctrl-btn:hover{background:#667eea;color:#fff}
+.ctrl-btn:disabled{opacity:.35;cursor:default}
+.ctrl-btn.active-ctrl{background:#667eea;color:#fff}
 
-/* Score */
-.score-bar {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 12px 0;
-}
-.score-item {
-  background: rgba(255,255,255,0.2);
-  color: white;
-  padding: 8px 20px;
-  border-radius: 20px;
-  font-size: 0.95em;
-  backdrop-filter: blur(10px);
-}
-.score-item span { font-weight: bold; font-size: 1.1em; }
+/* 看教程 */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px}
+.vocab-card{background:linear-gradient(135deg,#f5f7fa,#c3cfe2);border-radius:11px;padding:11px;position:relative;cursor:pointer;transition:.22s;border:2px solid transparent}
+.vocab-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.14);border-color:#667eea}
+.vocab-jp{font-size:1.18em;font-weight:700;color:#2c3e50;margin-bottom:2px;padding-right:26px;line-height:1.3}
+.vocab-ro{color:#e74c3c;font-size:.76em;font-style:italic;margin-bottom:2px}
+.vocab-cn{color:#555;font-size:.83em}
+.speak-mini{position:absolute;top:8px;right:8px;background:#667eea;color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.speak-mini:hover{background:#5568d3;transform:scale(1.1)}
+.grammar-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.grammar-item{background:linear-gradient(135deg,#fff5e6,#ffe4e1);border-radius:11px;padding:13px;border-left:5px solid #ff6b6b;cursor:pointer;transition:.2s}
+.grammar-item:hover{transform:translateX(3px)}
+.g-pattern{font-size:1.05em;font-weight:700;color:#c0392b;margin-bottom:4px}
+.g-meaning{color:#2c3e50;margin-bottom:5px;font-weight:500;font-size:.93em}
+.g-example{color:#555;font-size:.9em;line-height:1.7}
+.g-example .ro{color:#e74c3c;font-style:italic;font-size:.9em}
 
-/* Tabs */
-.tabs-section {
-  background: white;
-  border-radius: 20px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-}
-.tab-group { margin-bottom: 10px; }
-.tab-group:last-child { margin-bottom: 0; }
-.tab-group-label {
-  font-size: 0.8em;
-  color: #999;
-  margin-bottom: 6px;
-  padding-left: 4px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.tab-btn {
-  padding: 10px 18px;
-  border: 2px solid #e0e0e0;
-  background: white;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.95em;
-  font-family: inherit;
-  transition: all 0.2s;
-  font-weight: 500;
-}
-.tab-btn:hover {
-  border-color: #667eea;
-  transform: translateY(-1px);
-}
-.tab-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 4px 15px rgba(102,126,234,0.4);
-}
-.tab-btn.mode-btn.active {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  box-shadow: 0 4px 15px rgba(245,87,108,0.4);
-}
-
-/* Main content */
-#content {
-  background: white;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-  min-height: 400px;
-}
-
-/* Section title */
-.section-title {
-  font-size: 1.3em;
-  color: #2c3e50;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 3px solid #667eea;
-  display: inline-block;
-}
-
-/* Vocab grid */
-.vocab-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-}
-.vocab-card {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 14px;
-  padding: 14px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.25s;
-  border: 2px solid transparent;
-}
-.vocab-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  border-color: #667eea;
-}
-.vocab-jp {
-  font-size: 1.35em;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 4px;
-  padding-right: 32px;
-  line-height: 1.3;
-}
-.vocab-ro {
-  color: #e74c3c;
-  font-size: 0.85em;
-  font-style: italic;
-  margin-bottom: 4px;
-}
-.vocab-cn {
-  color: #555;
-  font-size: 0.9em;
-}
-.speak-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(102,126,234,0.4);
-}
-.speak-btn:hover {
-  background: #5568d3;
-  transform: scale(1.1);
-}
-.speak-btn:active {
-  transform: scale(0.95);
-}
-
-/* Quiz */
-.quiz-box {
-  max-width: 700px;
-  margin: 0 auto;
-}
-.quiz-progress {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  color: #666;
-  font-size: 0.9em;
-}
-.progress-bar {
-  flex: 1;
-  height: 8px;
-  background: #e0e0e0;
-  border-radius: 4px;
-  margin: 0 12px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 4px;
-  transition: width 0.4s;
-}
-.question-card {
-  background: #f8f9fa;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 16px;
-  text-align: center;
-}
-.question-label {
-  color: #999;
-  font-size: 0.85em;
-  margin-bottom: 8px;
-}
-.question-text {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 8px;
-}
-.question-sub {
-  color: #e74c3c;
-  font-style: italic;
-  font-size: 0.95em;
-  margin-bottom: 8px;
-}
-.options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
-}
-.option-btn {
-  padding: 14px;
-  border: 2px solid #e0e0e0;
-  background: white;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1em;
-  font-family: inherit;
-  transition: all 0.2s;
-  text-align: center;
-}
-.option-btn:hover:not(:disabled) {
-  border-color: #667eea;
-  background: #f0f3ff;
-  transform: translateY(-2px);
-}
-.option-btn.correct {
-  background: #d4edda;
-  border-color: #28a745;
-  color: #155724;
-  font-weight: bold;
-}
-.option-btn.wrong {
-  background: #f8d7da;
-  border-color: #dc3545;
-  color: #721c24;
-}
-.option-btn:disabled { cursor: default; }
-
-.feedback {
-  margin-top: 16px;
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 0.95em;
-  animation: fadeIn 0.3s;
-}
-.feedback.correct {
-  background: #d4edda;
-  color: #155724;
-  border-left: 4px solid #28a745;
-}
-.feedback.wrong {
-  background: #f8d7da;
-  color: #721c24;
-  border-left: 4px solid #dc3545;
-}
-.feedback .fb-title { font-weight: bold; margin-bottom: 4px; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Write mode */
-.write-input {
-  width: 100%;
-  padding: 14px;
-  font-size: 1.2em;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  font-family: inherit;
-  text-align: center;
-  margin-top: 12px;
-  transition: border-color 0.2s;
-}
-.write-input:focus {
-  outline: none;
-  border-color: #667eea;
-}
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  margin-top: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.05em;
-  font-family: inherit;
-  cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.2s;
-}
-.submit-btn:hover { transform: translateY(-2px); }
-.submit-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
-
-/* Speak mode */
-.speak-card {
-  text-align: center;
-  padding: 30px 20px;
-}
-.speak-jp {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 12px;
-  letter-spacing: 2px;
-}
-.speak-ro {
-  font-size: 1.2em;
-  color: #e74c3c;
-  font-style: italic;
-  margin-bottom: 8px;
-}
-.speak-cn {
-  font-size: 1.1em;
-  color: #666;
-  margin-bottom: 24px;
-}
-.big-play-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  font-size: 2em;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(102,126,234,0.4);
-  transition: all 0.2s;
-  margin: 8px;
-}
-.big-play-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 12px 35px rgba(102,126,234,0.5);
-}
-.big-play-btn:active { transform: scale(0.95); }
-.speak-nav {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-.nav-btn {
-  padding: 10px 20px;
-  background: white;
-  border: 2px solid #667eea;
-  color: #667eea;
-  border-radius: 10px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.95em;
-  font-weight: bold;
-  transition: all 0.2s;
-}
-.nav-btn:hover {
-  background: #667eea;
-  color: white;
-}
-.nav-btn:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
-/* Grammar section */
-.grammar-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.grammar-item {
-  background: linear-gradient(135deg, #fff5e6 0%, #ffe4e1 100%);
-  border-radius: 14px;
-  padding: 16px;
-  border-left: 5px solid #ff6b6b;
-}
-.grammar-pattern {
-  font-size: 1.15em;
-  font-weight: bold;
-  color: #c0392b;
-  margin-bottom: 6px;
-}
-.grammar-meaning {
-  color: #2c3e50;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-.grammar-example {
-  color: #555;
-  font-size: 0.95em;
-  line-height: 1.7;
-}
-.grammar-example .jp { color: #2c3e50; font-weight: 500; }
-.grammar-example .ro { color: #e74c3c; font-style: italic; font-size: 0.9em; }
-
-/* Result screen */
-.result-screen {
-  text-align: center;
-  padding: 30px;
-}
-.result-emoji { font-size: 5em; margin-bottom: 10px; animation: bounce 1s infinite; }
-@keyframes bounce {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-.result-score {
-  font-size: 2em;
-  font-weight: bold;
-  color: #667eea;
-  margin-bottom: 10px;
-}
-.result-msg {
-  color: #666;
-  margin-bottom: 24px;
-  font-size: 1.1em;
-}
-
-@media (max-width: 600px) {
-  header h1 { font-size: 1.6em; }
-  .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .options { grid-template-columns: 1fr; }
-  .speak-jp { font-size: 1.8em; }
-  #content { padding: 16px; }
-  .tab-btn { padding: 8px 14px; font-size: 0.85em; }
+/* 練習 */
+.quiz-wrap{max-width:720px;margin:0 auto}
+.quiz-prog{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#666;font-size:.82em}
+.qbar{flex:1;height:7px;background:#e0e0e0;border-radius:4px;margin:0 9px;overflow:hidden}
+.qbar-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);transition:width .4s;border-radius:4px}
+.qcard{background:#f8f9fa;border-radius:13px;padding:18px;margin-bottom:12px;text-align:center;animation:fadeSlide .3s}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.qtag{display:inline-block;background:#667eea;color:#fff;font-size:.7em;padding:3px 10px;border-radius:9px;margin-bottom:7px;letter-spacing:1px}
+.qtext{font-size:1.2em;font-weight:700;color:#2c3e50;margin-bottom:5px;line-height:1.5}
+.qsub{color:#888;font-size:.88em}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{padding:12px 9px;border:2px solid #e0e0e0;background:#fff;border-radius:10px;cursor:pointer;font-size:.94em;font-family:inherit;transition:.18s;text-align:center;line-height:1.45}
+.opt:hover:not(:disabled){border-color:#667eea;background:#f0f3ff;transform:translateY(-1px)}
+.opt.correct{background:#d4edda;border-color:#28a745;color:#155724;font-weight:700}
+.opt.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.opt:disabled{cursor:default}
+.fb{margin-top:12px;padding:13px;border-radius:11px;font-size:.9em;line-height:1.65;animation:fadeSlide .3s;text-align:left}
+.fb.correct{background:#d4edda;color:#155724;border-left:4px solid #28a745}
+.fb.wrong{background:#f8d7da;color:#721c24;border-left:4px solid #dc3545}
+.fb-title{font-weight:700;margin-bottom:4px;font-size:1em}
+.fb-exp{margin-top:3px}
+.next-btn{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:.96em;font-family:inherit;cursor:pointer;font-weight:700;transition:.2s}
+.next-btn:hover{transform:translateY(-2px)}
+.result-screen{text-align:center;padding:24px}
+.result-emoji{font-size:4.2em;margin-bottom:6px;animation:bounce 1s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.result-score{font-size:1.8em;font-weight:700;color:#667eea;margin-bottom:6px}
+.result-msg{color:#666;margin-bottom:18px;font-size:1em}
+.restart-btn{padding:12px 28px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:.96em;font-family:inherit;cursor:pointer;font-weight:700}
+.audio-note{background:#fff8e1;border:1px solid #ffe082;border-radius:9px;padding:9px 13px;margin-bottom:10px;font-size:.82em;color:#8d6e63;line-height:1.6}
+.audio-note b{color:#e65100}
+@media(max-width:640px){
+  header h1{font-size:1.4em}
+  .lesson-bar{grid-template-columns:repeat(3,1fr)}
+  .vocab-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .options{grid-template-columns:1fr}
+  #content{padding:12px}
+  .qtext{font-size:1.08em}
+  .play-btn{width:76px;height:76px;font-size:1.9em}
+  .mode-btn,.lesson-btn{font-size:.75em}
 }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>🌸 日本語學習樂園 🌸</h1>
-    <p>第1-5課・聽・說・讀・寫 全方位學習</p>
+    <h1>🌸 日語學習樂園 🌸</h1>
+    <p>廣東話詳細教程 × 聽講讀寫 × 第1-6課</p>
   </header>
-
   <div class="score-bar">
     <div class="score-item">🏆 總分 <span id="totalScore">0</span></div>
     <div class="score-item">🔥 連對 <span id="streak">0</span></div>
+    <div class="score-item">✅ 答對 <span id="correctCount">0</span></div>
   </div>
-
-  <div class="tabs-section">
-    <div class="tab-group">
-      <div class="tab-group-label">📚 選擇課程</div>
-      <div class="tabs" id="lessonTabs">
-        <button class="tab-btn active" data-lesson="1">第1課</button>
-        <button class="tab-btn" data-lesson="2">第2課</button>
-        <button class="tab-btn" data-lesson="3">第3課</button>
-        <button class="tab-btn" data-lesson="4">第4課</button>
-        <button class="tab-btn" data-lesson="5">第5課</button>
-      </div>
-    </div>
-    <div class="tab-group">
-      <div class="tab-group-label">🎯 學習模式</div>
-      <div class="tabs" id="modeTabs">
-        <button class="tab-btn mode-btn active" data-mode="read">📖 讀</button>
-        <button class="tab-btn mode-btn" data-mode="listen">👂 聽</button>
-        <button class="tab-btn mode-btn" data-mode="speak">🗣️ 說</button>
-        <button class="tab-btn mode-btn" data-mode="write">✍️ 寫</button>
-        <button class="tab-btn mode-btn" data-mode="grammar">📝 文法</button>
-      </div>
-    </div>
+  <div class="lesson-bar" id="lessonBar"></div>
+  <div class="mode-bar">
+    <button class="mode-btn active" data-mode="listen">🎧 聽教程</button>
+    <button class="mode-btn" data-mode="read">📖 看教程</button>
+    <button class="mode-btn" data-mode="quiz">✏️ 做練習</button>
   </div>
-
   <div id="content"></div>
 </div>
 
 <script>
-// ============ 資料區 ============
-const vocabData = {
-  1: [
-    {jp:"わたし", ro:"watashi", cn:"我"},
-    {jp:"あなた", ro:"anata", cn:"你"},
-    {jp:"あのひと", ro:"ano hito", cn:"那個人"},
-    {jp:"あのかた", ro:"ano kata", cn:"那位（禮貌）"},
-    {jp:"さん", ro:"san", cn:"先生／小姐（敬稱）"},
-    {jp:"ちゃん", ro:"chan", cn:"～醬（暱稱）"},
-    {jp:"じん", ro:"jin", cn:"～人（國籍）"},
-    {jp:"せんせい", ro:"sensei", cn:"老師／醫生"},
-    {jp:"きょうし", ro:"kyoushi", cn:"教師"},
-    {jp:"がくせい", ro:"gakusei", cn:"學生"},
-    {jp:"かいしゃいん", ro:"kaishain", cn:"公司職員"},
-    {jp:"しゃいん", ro:"shain", cn:"公司成員"},
-    {jp:"ぎんこういん", ro:"ginkouin", cn:"銀行行員"},
-    {jp:"いしゃ", ro:"isha", cn:"醫生"},
-    {jp:"けんきゅうしゃ", ro:"kenkyuusha", cn:"研究人員"},
-    {jp:"だいがく", ro:"daigaku", cn:"大學"},
-    {jp:"びょういん", ro:"byouin", cn:"醫院"},
-    {jp:"だれ", ro:"dare", cn:"誰"},
-    {jp:"どなた", ro:"donata", cn:"哪位（禮貌）"},
-    {jp:"さい", ro:"sai", cn:"～歲"},
-    {jp:"なんさい", ro:"nansai", cn:"幾歲"},
-    {jp:"おいくつ", ro:"oikutsu", cn:"幾歲（禮貌）"},
-    {jp:"はい", ro:"hai", cn:"是"},
-    {jp:"いいえ", ro:"iie", cn:"不"},
-    {jp:"はじめまして", ro:"hajimemashite", cn:"初次見面"},
-    {jp:"から きました", ro:"kara kimashita", cn:"從～來的"},
-    {jp:"どうぞ よろしく おねがいします", ro:"douzo yoroshiku onegaishimasu", cn:"請多多關照"},
-    {jp:"しつれいですが", ro:"shitsurei desuga", cn:"冒昧請問"},
-    {jp:"おなまえは", ro:"onamae wa", cn:"您的名字是"},
-    {jp:"こちらは さんです", ro:"kochira wa san desu", cn:"這位是～先生／小姐"},
-    {jp:"アメリカ", ro:"amerika", cn:"美國"},
-    {jp:"イギリス", ro:"igirisu", cn:"英國"},
-    {jp:"インド", ro:"indo", cn:"印度"},
-    {jp:"インドネシア", ro:"indoneshia", cn:"印尼"},
-    {jp:"かんこく", ro:"kankoku", cn:"韓國"},
-    {jp:"タイ", ro:"tai", cn:"泰國"},
-    {jp:"ちゅうごく", ro:"chuugoku", cn:"中國"},
-    {jp:"ドイツ", ro:"doitsu", cn:"德國"},
-    {jp:"にほん", ro:"nihon", cn:"日本"},
-    {jp:"ブラジル", ro:"burajiru", cn:"巴西"},
-    {jp:"アイエムシー", ro:"ai emu shii", cn:"IMC（公司名）"},
-    {jp:"パワーでんき", ro:"pawaa denki", cn:"電力公司"},
-    {jp:"ブラジルエアー", ro:"burajiru eaa", cn:"巴西航空"},
-    {jp:"エーケーシー", ro:"ee kee shii", cn:"AKC（公司名）"},
-    {jp:"こうべびょういん", ro:"koube byouin", cn:"神戶醫院"},
-    {jp:"さくらだいがく", ro:"sakura daigaku", cn:"櫻花大學"},
-    {jp:"ふじだいがく", ro:"fuji daigaku", cn:"富士大學"},
-    {jp:"じゃ ありません", ro:"ja arimasen", cn:"不是（口語）"},
-    {jp:"では ありません", ro:"dewa arimasen", cn:"不是（正式）"},
-    {jp:"おはよう ございます", ro:"ohayou gozaimasu", cn:"早安"}
-  ],
-  2: [
-    {jp:"これ", ro:"kore", cn:"這個"},
-    {jp:"それ", ro:"sore", cn:"那個"},
-    {jp:"あれ", ro:"are", cn:"那個（遠處）"},
-    {jp:"この", ro:"kono", cn:"這個～"},
-    {jp:"その", ro:"sono", cn:"那個～"},
-    {jp:"あの", ro:"ano", cn:"那個～（遠處）"},
-    {jp:"ほん", ro:"hon", cn:"書"},
-    {jp:"じしょ", ro:"jisho", cn:"字典"},
-    {jp:"ざっし", ro:"zasshi", cn:"雜誌"},
-    {jp:"しんぶん", ro:"shinbun", cn:"報紙"},
-    {jp:"ノート", ro:"nooto", cn:"筆記本"},
-    {jp:"てちょう", ro:"techou", cn:"記事本"},
-    {jp:"めいし", ro:"meishi", cn:"名片"},
-    {jp:"カード", ro:"kaado", cn:"卡片"},
-    {jp:"えんぴつ", ro:"enpitsu", cn:"鉛筆"},
-    {jp:"ボールペン", ro:"boorupen", cn:"原子筆"},
-    {jp:"シャープペンシル", ro:"shaapupenshiru", cn:"自動鉛筆"},
-    {jp:"かぎ", ro:"kagi", cn:"鑰匙"},
-    {jp:"とけい", ro:"tokei", cn:"時鐘／手錶"},
-    {jp:"かさ", ro:"kasa", cn:"雨傘"},
-    {jp:"かばん", ro:"kaban", cn:"包包"},
-    {jp:"シーディー", ro:"shii dii", cn:"CD"},
-    {jp:"テレビ", ro:"terebi", cn:"電視"},
-    {jp:"ラジオ", ro:"rajio", cn:"收音機"},
-    {jp:"カメラ", ro:"kamera", cn:"照相機"},
-    {jp:"コンピューター", ro:"konpyuutaa", cn:"電腦"},
-    {jp:"くるま", ro:"kuruma", cn:"車"},
-    {jp:"つくえ", ro:"tsukue", cn:"桌子"},
-    {jp:"いす", ro:"isu", cn:"椅子"},
-    {jp:"チョコレート", ro:"chokoreeto", cn:"巧克力"},
-    {jp:"コーヒー", ro:"koohii", cn:"咖啡"},
-    {jp:"おみやげ", ro:"omiyage", cn:"伴手禮"},
-    {jp:"えいご", ro:"eigo", cn:"英文"},
-    {jp:"にほんご", ro:"nihongo", cn:"日文"},
-    {jp:"なん", ro:"nan", cn:"什麼"},
-    {jp:"そう", ro:"sou", cn:"這樣"},
-    {jp:"これから おせわに なります", ro:"korekara osewa ni narimasu", cn:"今後請多關照"},
-    {jp:"こちらこそ どうぞ よろしく おねがいします", ro:"kochirakoso douzo yoroshiku onegaishimasu", cn:"我才要請您多關照"},
-    {jp:"あのう", ro:"anou", cn:"嗯…"},
-    {jp:"えっ", ro:"e", cn:"咦？"},
-    {jp:"どうぞ", ro:"douzo", cn:"請"},
-    {jp:"どうも ありがとう ございます", ro:"doumo arigatou gozaimasu", cn:"非常感謝"},
-    {jp:"そうですか", ro:"sou desuka", cn:"是喔"},
-    {jp:"ちがいます", ro:"chigaimasu", cn:"不對"},
-    {jp:"あ", ro:"a", cn:"啊"},
-    {jp:"パンコン", ro:"pankon", cn:"個人電腦"},
-    {jp:"まる", ro:"maru", cn:"圓圈／正確符號"},
-    {jp:"あのう、これ、おみやげです", ro:"anou, kore, omiyage desu", cn:"那個，這是伴手禮"},
-    {jp:"えっ、なんですか", ro:"e, nan desuka", cn:"咦？是什麼？"},
-    {jp:"いいえ、ちがいます", ro:"iie, chigaimasu", cn:"不，不是那樣"}
-  ],
-  3: [
-    {jp:"ここ", ro:"koko", cn:"這裡"},
-    {jp:"そこ", ro:"soko", cn:"那裡"},
-    {jp:"あそこ", ro:"asoko", cn:"那裡（遠處）"},
-    {jp:"どこ", ro:"doko", cn:"哪裡"},
-    {jp:"こちら", ro:"kochira", cn:"這邊（禮貌）"},
-    {jp:"そちら", ro:"sochira", cn:"那邊（禮貌）"},
-    {jp:"あちら", ro:"achira", cn:"那邊（禮貌，遠處）"},
-    {jp:"どちら", ro:"dochira", cn:"哪邊（禮貌）"},
-    {jp:"きょうしつ", ro:"kyoushitsu", cn:"教室"},
-    {jp:"しょくどう", ro:"shokudou", cn:"食堂"},
-    {jp:"じむしょ", ro:"jimusho", cn:"辦公室"},
-    {jp:"かいぎしょ", ro:"kaigisho", cn:"會議室"},
-    {jp:"うけつけ", ro:"uketsuke", cn:"接待處"},
-    {jp:"ロビー", ro:"robii", cn:"大廳"},
-    {jp:"へや", ro:"heya", cn:"房間"},
-    {jp:"トイレ", ro:"toire", cn:"廁所"},
-    {jp:"おてあらい", ro:"otearai", cn:"洗手間（禮貌）"},
-    {jp:"かいだん", ro:"kaidan", cn:"樓梯"},
-    {jp:"エスカレーター", ro:"esukareetaa", cn:"電扶梯"},
-    {jp:"じどうはんばいき", ro:"jidouhanbaiki", cn:"自動販賣機"},
-    {jp:"でんわ", ro:"denwa", cn:"電話"},
-    {jp:"おくに", ro:"okuni", cn:"您的國家"},
-    {jp:"かいしゃ", ro:"kaisha", cn:"公司"},
-    {jp:"うち", ro:"uchi", cn:"家"},
-    {jp:"くつ", ro:"kutsu", cn:"鞋子"},
-    {jp:"くつした", ro:"kutsushita", cn:"襪子"},
-    {jp:"ネクタイ", ro:"nekutai", cn:"領帶"},
-    {jp:"ワイン", ro:"wain", cn:"葡萄酒"},
-    {jp:"うりば", ro:"uriba", cn:"賣場"},
-    {jp:"ちか", ro:"chika", cn:"地下"},
-    {jp:"なんがい", ro:"nangai", cn:"幾樓"},
-    {jp:"えん", ro:"en", cn:"日圓"},
-    {jp:"いくら", ro:"ikura", cn:"多少錢"},
-    {jp:"ひゃく", ro:"hyaku", cn:"百"},
-    {jp:"せん", ro:"sen", cn:"千"},
-    {jp:"まん", ro:"man", cn:"萬"},
-    {jp:"いらっしゃいませ", ro:"irasshaimase", cn:"歡迎光臨"},
-    {jp:"を みせて ください", ro:"o misete kudasai", cn:"請給我看"},
-    {jp:"じゃ", ro:"ja", cn:"那麼"},
-    {jp:"ください", ro:"kudasai", cn:"請給我"},
-    {jp:"すみません", ro:"sumimasen", cn:"不好意思"},
-    {jp:"どうも", ro:"doumo", cn:"謝謝／非常"},
-    {jp:"イタリア", ro:"itaria", cn:"義大利"},
-    {jp:"スイス", ro:"suisu", cn:"瑞士"},
-    {jp:"フランス", ro:"furansu", cn:"法國"},
-    {jp:"ジャカルタ", ro:"jakaruta", cn:"雅加達"},
-    {jp:"バンコク", ro:"bankoku", cn:"曼谷"},
-    {jp:"ベルリン", ro:"berurin", cn:"柏林"},
-    {jp:"しんおおさか", ro:"shin oosaka", cn:"新大阪"}
-  ],
-  4: [
-    {jp:"おきます", ro:"okimasu", cn:"起床"},
-    {jp:"ねます", ro:"nemasu", cn:"睡覺"},
-    {jp:"はたらきます", ro:"hatarakimasu", cn:"工作"},
-    {jp:"やすみます", ro:"yasumimasu", cn:"休息"},
-    {jp:"べんきょうします", ro:"benkyoushimasu", cn:"學習"},
-    {jp:"おわります", ro:"owarimasu", cn:"結束"},
-    {jp:"デパート", ro:"depaato", cn:"百貨公司"},
-    {jp:"ぎんこう", ro:"ginkou", cn:"銀行"},
-    {jp:"ゆうびんきょく", ro:"yuubinkyoku", cn:"郵局"},
-    {jp:"としょかん", ro:"toshokan", cn:"圖書館"},
-    {jp:"びじゅつかん", ro:"bijutsukan", cn:"美術館"},
-    {jp:"いま", ro:"ima", cn:"現在"},
-    {jp:"じ", ro:"ji", cn:"～點"},
-    {jp:"ふん", ro:"fun", cn:"～分"},
-    {jp:"ぷん", ro:"pun", cn:"～分"},
-    {jp:"はん", ro:"han", cn:"半"},
-    {jp:"なんじ", ro:"nanji", cn:"幾點"},
-    {jp:"なんぷん", ro:"nanpun", cn:"幾分"},
-    {jp:"ごぜん", ro:"gozen", cn:"上午"},
-    {jp:"ごご", ro:"gogo", cn:"下午"},
-    {jp:"あさ", ro:"asa", cn:"早上"},
-    {jp:"ひる", ro:"hiru", cn:"中午"},
-    {jp:"ばん", ro:"ban", cn:"晚上"},
-    {jp:"おととい", ro:"ototoi", cn:"前天"},
-    {jp:"きのう", ro:"kinou", cn:"昨天"},
-    {jp:"きょう", ro:"kyou", cn:"今天"},
-    {jp:"あした", ro:"ashita", cn:"明天"},
-    {jp:"あさって", ro:"asatte", cn:"後天"},
-    {jp:"けさ", ro:"kesa", cn:"今天早上"},
-    {jp:"こんばん", ro:"konban", cn:"今天晚上"},
-    {jp:"やすみ", ro:"yasumi", cn:"假日"},
-    {jp:"ひるやすみ", ro:"hiruyasumi", cn:"午休"},
-    {jp:"しけん", ro:"shiken", cn:"考試"},
-    {jp:"かいぎ", ro:"kaigi", cn:"會議"},
-    {jp:"えいが", ro:"eiga", cn:"電影"},
-    {jp:"まいあさ", ro:"maiasa", cn:"每天早上"},
-    {jp:"まいばん", ro:"maiban", cn:"每天晚上"},
-    {jp:"まいにち", ro:"mainichi", cn:"每天"},
-    {jp:"げつようび", ro:"getsuyoubi", cn:"星期一"},
-    {jp:"かようび", ro:"kayoubi", cn:"星期二"},
-    {jp:"すいようび", ro:"suiyoubi", cn:"星期三"},
-    {jp:"もくようび", ro:"mokuyoubi", cn:"星期四"},
-    {jp:"きんようび", ro:"kinyoubi", cn:"星期五"},
-    {jp:"どようび", ro:"doyoubi", cn:"星期六"},
-    {jp:"にちようび", ro:"nichiyoubi", cn:"星期日"},
-    {jp:"なんようび", ro:"nanyoubi", cn:"星期幾"},
-    {jp:"から", ro:"kara", cn:"從～"},
-    {jp:"まで", ro:"made", cn:"到～"},
-    {jp:"と", ro:"to", cn:"和～"},
-    {jp:"ばんごう", ro:"bangou", cn:"號碼"},
-    {jp:"なんばん", ro:"nanban", cn:"幾號"},
-    {jp:"そちら", ro:"sochira", cn:"那邊"},
-    {jp:"たいへんですね", ro:"taihen desune", cn:"真辛苦啊"},
-    {jp:"ニューヨーク", ro:"nyuuyooku", cn:"紐約"},
-    {jp:"ペキン", ro:"pekin", cn:"北京"},
-    {jp:"ロサンゼルス", ro:"rosanzerusu", cn:"洛杉磯"},
-    {jp:"ロンドン", ro:"rondon", cn:"倫敦"},
-    {jp:"あすか", ro:"asuka", cn:"明日香（人名）"},
-    {jp:"アップルぎんこう", ro:"appuru ginkou", cn:"蘋果銀行"},
-    {jp:"みどりとしょかん", ro:"midori toshokan", cn:"綠圖書館"},
-    {jp:"やまとびじゅつかん", ro:"yamato bijutsukan", cn:"大和美術館"},
-    {jp:"でんわばんごう", ro:"denwa bangou", cn:"電話號碼"},
-    {jp:"ます", ro:"masu", cn:"（動詞現在肯定）"},
-    {jp:"ました", ro:"mashita", cn:"（動詞過去肯定）"},
-    {jp:"ません", ro:"masen", cn:"（動詞現在否定）"},
-    {jp:"ませんでした", ro:"masen deshita", cn:"（動詞過去否定）"}
-  ],
-  5: [
-    {jp:"いきます", ro:"ikimasu", cn:"去"},
-    {jp:"きます", ro:"kimasu", cn:"來"},
-    {jp:"かえります", ro:"kaerimasu", cn:"回去"},
-    {jp:"がっこう", ro:"gakkou", cn:"學校"},
-    {jp:"スーパー", ro:"suupaa", cn:"超市"},
-    {jp:"えき", ro:"eki", cn:"車站"},
-    {jp:"ひこうき", ro:"hikouki", cn:"飛機"},
-    {jp:"ふね", ro:"fune", cn:"船"},
-    {jp:"でんしゃ", ro:"densha", cn:"電車"},
-    {jp:"ちかてつ", ro:"chikatetsu", cn:"地鐵"},
-    {jp:"しんかんせん", ro:"shinkansen", cn:"新幹線"},
-    {jp:"バス", ro:"basu", cn:"公車"},
-    {jp:"タクシー", ro:"takushii", cn:"計程車"},
-    {jp:"じてんしゃ", ro:"jitensha", cn:"自行車"},
-    {jp:"あるいて", ro:"aruite", cn:"走路"},
-    {jp:"ひと", ro:"hito", cn:"人"},
-    {jp:"ともだち", ro:"tomodachi", cn:"朋友"},
-    {jp:"かれ", ro:"kare", cn:"他"},
-    {jp:"かのじょ", ro:"kanojo", cn:"她"},
-    {jp:"かぞく", ro:"kazoku", cn:"家人"},
-    {jp:"ひとりで", ro:"hitoride", cn:"一個人"},
-    {jp:"せんしゅう", ro:"senshuu", cn:"上週"},
-    {jp:"こんしゅう", ro:"konshuu", cn:"這週"},
-    {jp:"らいしゅう", ro:"raishuu", cn:"下週"},
-    {jp:"せんげつ", ro:"sengetsu", cn:"上個月"},
-    {jp:"こんげつ", ro:"kongetsu", cn:"這個月"},
-    {jp:"らいげつ", ro:"raigetsu", cn:"下個月"},
-    {jp:"きょねん", ro:"kyonen", cn:"去年"},
-    {jp:"ことし", ro:"kotoshi", cn:"今年"},
-    {jp:"らいねん", ro:"rainen", cn:"明年"},
-    {jp:"ねん", ro:"nen", cn:"年"},
-    {jp:"なんねん", ro:"nannen", cn:"幾年"},
-    {jp:"がつ", ro:"gatsu", cn:"～月"},
-    {jp:"なんがつ", ro:"nangatsu", cn:"幾月"},
-    {jp:"ついたち", ro:"tsuitachi", cn:"1日"},
-    {jp:"ふつか", ro:"futsuka", cn:"2日"},
-    {jp:"みっか", ro:"mikka", cn:"3日"},
-    {jp:"よっか", ro:"yokka", cn:"4日"},
-    {jp:"いつか", ro:"itsuka", cn:"5日"},
-    {jp:"むいか", ro:"muika", cn:"6日"},
-    {jp:"なのか", ro:"nanoka", cn:"7日"},
-    {jp:"ようか", ro:"youka", cn:"8日"},
-    {jp:"ここのか", ro:"kokonoka", cn:"9日"},
-    {jp:"とおか", ro:"tooka", cn:"10日"},
-    {jp:"じゅうよっか", ro:"juuyokka", cn:"14日"},
-    {jp:"はつか", ro:"hatsuka", cn:"20日"},
-    {jp:"にじゅうよっか", ro:"nijuuyokka", cn:"24日"},
-    {jp:"にち", ro:"nichi", cn:"～日"},
-    {jp:"なんにち", ro:"nannichi", cn:"幾日"},
-    {jp:"いつ", ro:"itsu", cn:"什麼時候"},
-    {jp:"たんじょうび", ro:"tanjoubi", cn:"生日"},
-    {jp:"どうも ありがとう ございました", ro:"doumo arigatou gozaimashita", cn:"非常感謝（過去）"},
-    {jp:"どう いたしまして", ro:"dou itashimashite", cn:"不客氣"},
-    {jp:"ばんせん", ro:"bansen", cn:"～號月台"},
-    {jp:"つぎの", ro:"tsugino", cn:"下一個的"},
-    {jp:"ふつう", ro:"futsuu", cn:"普通車"},
-    {jp:"きゅうこう", ro:"kyuukou", cn:"急行"},
-    {jp:"とっきゅう", ro:"tokkyuu", cn:"特急"},
-    {jp:"そうですね", ro:"sou desune", cn:"是啊"},
-    {jp:"こうえん", ro:"kouen", cn:"公園"},
-    {jp:"おおさかじょう", ro:"oosakajou", cn:"大阪城"}
-  ]
+/* ================= 資料 ================= */
+const LESSONS = {
+1:{
+title:"第1課：はじめまして（初次見面）",
+tutorial:[
+{c:"歡迎嚟到第一課。今課我哋會學自我介紹、人稱代名詞、同埋基本嘅肯定否定句型。",j:""},
+{c:"第一個字係「わたし」，讀做 watashi。",j:"わたし"},
+{c:"「わたし」嘅漢字寫做「私」，意思係「我」，男女都用得，係最普遍嘅自稱。",j:""},
+{c:"例如「わたしは がくせい です」，即係「我係學生」。",j:"わたしは がくせい です"},
+{c:"跟住係「あなた」，讀做 anata，意思係「你」。",j:"あなた"},
+{c:"不過要留意，日本人好少直接叫對方「あなた」，通常會叫對方嘅姓氏加「さん」，咁樣禮貌好多。",j:""},
+{c:"「あのひと」讀做 ano hito，意思係「那個人」，用嚟指離雙方都遠嘅人。",j:"あのひと"},
+{c:"「あのかた」讀做 ano kata，係「あのひと」嘅禮貌版，用嚟指值得尊敬嘅人。",j:"あのかた"},
+{c:"「さん」讀做 san，係最常用嘅敬稱，接喺姓氏後面，例如「やまださん」。",j:"さん"},
+{c:"「ちゃん」讀做 chan，係暱稱，用嚟叫小朋友或者親密嘅朋友，例如「たろうちゃん」。",j:"ちゃん"},
+{c:"「じん」讀做 jin，接喺國名後面表示國籍，例如「にほんじん」即係日本人。",j:"じん"},
+{c:"「せんせい」讀做 sensei，係老師、醫生、律師等專業人士嘅尊稱。",j:"せんせい"},
+{c:"「きょうし」讀做 kyoushi，係「教師」呢個職業嘅名稱，唔係稱呼用語。",j:"きょうし"},
+{c:"「がくせい」讀做 gakusei，意思係學生。例如「わたしは がくせい です」。",j:"がくせい"},
+{c:"「かいしゃいん」讀做 kaishain，意思係公司職員。例如「わたしは かいしゃいん です」。",j:"かいしゃいん"},
+{c:"「ぎんこういん」讀做 ginkouin，係銀行行員。「いしゃ」讀做 isha，係醫生。",j:"ぎんこういん、いしゃ"},
+{c:"「けんきゅうしゃ」讀做 kenkyuusha，係研究人員。「だいがく」係大學，「びょういん」係醫院。",j:"けんきゅうしゃ、だいがく、びょういん"},
+{c:"「だれ」讀做 dare，係「誰」。「どなた」讀做 donata，係「哪位」嘅禮貌講法。",j:"だれ、どなた"},
+{c:"「なんさい」讀做 nansai，係問「幾歲」。「おいくつ」係更禮貌嘅問法。",j:"なんさい、おいくつ"},
+{c:"「はい」係「係」，「いいえ」係「唔係」。",j:"はい、いいえ"},
+{c:"「はじめまして」係初次見面嘅開場白。「どうぞ よろしく おねがいします」係「請多多關照」。",j:"はじめまして、どうぞ よろしく おねがいします"},
+{c:"「おはよう ございます」係早晨嘅問候。",j:"おはよう ございます"},
+{c:"跟住講文法。第一個句型係「AはBです」，意思係「A係B」。",j:""},
+{c:"「は」係主題標記助詞，讀音係 wa，唔係 ha。例如「わたしは がくせい です」。",j:"わたしは がくせい です"},
+{c:"第二個句型係否定句：「AはBじゃありません」或者「ではありません」，意思係「A唔係B」。",j:"わたしは せんせい じゃ ありません"},
+{c:"第三個句型係疑問句：「AはBですか」，句尾加「か」表示疑問。",j:"あなたは がくせい ですか"},
+{c:"回答肯定用「はい、そうです」或者「はい、がくせいです」。否定用「いいえ、ちがいます」。",j:""},
+{c:"「の」表示所屬，例如「パワーでんき の しゃいん」即係「電力公司嘅職員」。",j:"パワーでんき の しゃいん"},
+{c:"「～からきました」表示「從～嚟」，例如「アメリカ から きました」即係「從美國嚟」。",j:"アメリカ から きました"},
+{c:"最後，自我介紹嘅標準流程係：先講「はじめまして」，然後講自己個名，再講出身地同職業，最後講「どうぞ よろしく おねがいします」。",j:""}
+],
+vocab:[
+{jp:"わたし",ro:"watashi",cn:"我"},{jp:"あなた",ro:"anata",cn:"你"},
+{jp:"あのひと",ro:"ano hito",cn:"那個人"},{jp:"あのかた",ro:"ano kata",cn:"那位（禮貌）"},
+{jp:"さん",ro:"san",cn:"先生／小姐（敬稱）"},{jp:"ちゃん",ro:"chan",cn:"～醬（暱稱）"},
+{jp:"じん",ro:"jin",cn:"～人（國籍）"},{jp:"せんせい",ro:"sensei",cn:"老師／醫生"},
+{jp:"きょうし",ro:"kyoushi",cn:"教師"},{jp:"がくせい",ro:"gakusei",cn:"學生"},
+{jp:"かいしゃいん",ro:"kaishain",cn:"公司職員"},{jp:"ぎんこういん",ro:"ginkouin",cn:"銀行行員"},
+{jp:"いしゃ",ro:"isha",cn:"醫生"},{jp:"けんきゅうしゃ",ro:"kenkyuusha",cn:"研究人員"},
+{jp:"だいがく",ro:"daigaku",cn:"大學"},{jp:"びょういん",ro:"byouin",cn:"醫院"},
+{jp:"だれ",ro:"dare",cn:"誰"},{jp:"どなた",ro:"donata",cn:"哪位（禮貌）"},
+{jp:"なんさい",ro:"nansai",cn:"幾歲"},{jp:"おいくつ",ro:"oikutsu",cn:"幾歲（禮貌）"},
+{jp:"はい",ro:"hai",cn:"是"},{jp:"いいえ",ro:"iie",cn:"不"},
+{jp:"はじめまして",ro:"hajimemashite",cn:"初次見面"},
+{jp:"どうぞよろしくおねがいします",ro:"douzo yoroshiku onegaishimasu",cn:"請多多關照"},
+{jp:"おはようございます",ro:"ohayou gozaimasu",cn:"早安"}
+],
+grammar:[
+{p:"AはBです",m:"A係B（肯定）",e:"わたしはがくせいです。<br><span class='ro'>watashi wa gakusei desu.</span><br>我係學生。"},
+{p:"AはBじゃ／ではありません",m:"A唔係B（否定）",e:"わたしはせんせいじゃありません。<br><span class='ro'>watashi wa sensei ja arimasen.</span><br>我唔係老師。"},
+{p:"AはBですか",m:"A係B嗎？（疑問）",e:"あなたはがくせいですか。<br><span class='ro'>anata wa gakusei desuka.</span><br>你係學生嗎？"},
+{p:"AのB",m:"A嘅B（所屬）",e:"パワーでんきのしゃいんです。<br><span class='ro'>pawaa denki no shain desu.</span><br>係電力公司嘅職員。"},
+{p:"～からきました",m:"從～嚟",e:"アメリカからきました。<br><span class='ro'>amerika kara kimashita.</span><br>從美國嚟。"}
+],
+quiz:[
+{t:"mc",q:"「わたし」嘅意思係？",o:["我","你","他","她"],a:0,e:"「わたし」漢字寫做「私」，係最普遍嘅自稱，男女都用得。"},
+{t:"mc",q:"「あなた」嘅意思係？",o:["我","你","那個人","老師"],a:1,e:"「あなた」係「你」，但日本人好少直接咁叫對方，通常叫姓氏加「さん」。"},
+{t:"mc",q:"「あのかた」係邊個嘅禮貌版？",o:["わたし","あなた","あのひと","せんせい"],a:2,e:"「あのかた」係「あのひと」（那個人）嘅敬語形式。"},
+{t:"mc",q:"「せんせい」嘅意思係？",o:["學生","老師／醫生","銀行行員","研究人員"],a:1,e:"「せんせい」係對老師、醫生、律師等專業人士嘅尊稱。"},
+{t:"mc",q:"「がくせい」嘅意思係？",o:["學生","老師","公司職員","醫生"],a:0,e:"「がくせい」漢字係「学生」，意思係學生。"},
+{t:"mc",q:"「かいしゃいん」嘅意思係？",o:["銀行行員","公司職員","研究人員","醫生"],a:1,e:"「かいしゃいん」漢字係「会社員」，係公司職員。"},
+{t:"mc",q:"「ぎんこういん」嘅意思係？",o:["銀行行員","公司職員","老師","學生"],a:0,e:"「ぎんこういん」漢字係「銀行員」，係銀行行員。"},
+{t:"mc",q:"「いしゃ」嘅意思係？",o:["老師","醫生","學生","研究人員"],a:1,e:"「いしゃ」漢字係「医者」，意思係醫生。"},
+{t:"mc",q:"「けんきゅうしゃ」嘅意思係？",o:["老師","學生","研究人員","銀行行員"],a:2,e:"「けんきゅうしゃ」漢字係「研究者」，係研究人員。"},
+{t:"mc",q:"「AはBです」係咩句型？",o:["疑問句","肯定句","否定句","命令句"],a:1,e:"「AはBです」係肯定句，意思係「A係B」。"},
+{t:"mc",q:"「AはBじゃありません」係咩句型？",o:["肯定句","疑問句","否定句","邀請句"],a:2,e:"「じゃありません」係否定，意思係「A唔係B」。"},
+{t:"mc",q:"「あなたはがくせいですか」嘅肯定回答係？",o:["はい、がくせいです","いいえ、がくせいです","はい、がくせいじゃありません","いいえ、ちがいます"],a:0,e:"肯定回答用「はい」，然後重複肯定句。"},
+{t:"mc",q:"「の」喺「パワーでんきのしゃいん」入面表示咩？",o:["時間","場所","所屬","方向"],a:2,e:"「の」連接兩個名詞，表示所屬關係。"},
+{t:"mc",q:"「アメリカからきました」嘅意思係？",o:["去美國","從美國嚟","住在美國","美國人"],a:1,e:"「から」表示起點，「きました」係「嚟」，即「從美國嚟」。"},
+{t:"mc",q:"「はじめまして」通常喺咩時候講？",o:["道別時","初次見面","食飯前","瞓覺前"],a:1,e:"「はじめまして」係初次見面嘅固定開場白。"},
+{t:"fill",q:"請填入適當嘅助詞：わたし（　）がくせいです。",o:["は","が","を","に"],a:0,e:"「は」係主題標記助詞，讀音係 wa。"},
+{t:"fill",q:"請填入適當嘅助詞：アメリカ（　）きました。",o:["まで","から","と","で"],a:1,e:"「から」表示起點，即「從美國嚟」。"},
+{t:"fill",q:"請填入適當嘅詞彙：わたしは（　）です。（我係學生）",o:["がくせい","せんせい","いしゃ","かいしゃいん"],a:0,e:"「がくせい」係學生。"},
+{t:"trans",q:"「わたしは かいしゃいん じゃ ありません」嘅中文意思係？",o:["我係公司職員","我唔係公司職員","你係公司職員","佢係公司職員"],a:1,e:"「じゃありません」係否定，即「唔係」。"},
+{t:"trans",q:"「あなたは せんせい ですか」嘅中文意思係？",o:["你係老師嗎？","我係老師嗎？","你唔係老師。","他是老師。"],a:0,e:"「あなた」係你，「せんせい」係老師，「ですか」係疑問。"},
+{t:"trans",q:"「我係從中國嚟嘅」嘅日文係？",o:["わたしはちゅうごくからきました","わたしはちゅうごくへいきます","わたしはちゅうごくにいます","わたしはちゅうごくじんです"],a:0,e:"「からきました」表示「從～嚟」。"},
+{t:"reorder",q:"請選出正確嘅排列：①わたし ②がくせい ③は ④です",o:["①③②④","②③①④","①③④②","②①③④"],a:0,e:"正確係「わたしはがくせいです」，即①③②④。"},
+{t:"reorder",q:"請選出正確嘅排列：①から ②アメリカ ③きました ④は",o:["②①③④","④②①③","②④①③","①④②③"],a:1,e:"正確係「わたしはアメリカからきました」，但選項冇わたし，正確排列係④②①③。"},
+{t:"match",q:"「あのひと」嘅正確意思係？",o:["這個人","那個人","那個人（禮貌）","誰"],a:1,e:"「あのひと」係「那個人」嘅普通說法。"},
+{t:"match",q:"「どなた」嘅正確意思係？",o:["誰（普通）","哪位（禮貌）","什麼","哪裡"],a:1,e:"「どなた」係「誰」嘅禮貌講法。"},
+{t:"fix",q:"以下邊句有錯？",o:["わたしはがくせいです","わたしはせんせいじゃありません","あなたはがくせいですか","わたしはがくせいじゃです"],a:3,e:"「じゃです」係錯嘅，正確係「じゃありません」。"},
+{t:"fix",q:"「あなたはせんせいですか」嘅否定回答，邊句正確？",o:["いいえ、せんせいです","いいえ、せんせいじゃありません","はい、せんせいじゃありません","いいえ、ちがいますです"],a:1,e:"否定回答用「いいえ」加否定句「じゃありません」。"},
+{t:"qa",q:"「おなまえは？」嘅正確回答係？",o:["わたしはやまだです","わたしはがくせいです","わたしはにほんじんです","わたしはせんせいです"],a:0,e:"問名字要回答自己個名。"},
+{t:"qa",q:"「おいくつですか」嘅正確回答係？",o:["20さいです","がくせいです","にほんじんです","やまだです"],a:0,e:"問年齡要回答歲數。"},
+{t:"conv",q:"A：はじめまして。B：＿＿＿＿。",o:["はじめまして","さようなら","おやすみなさい","いただきます"],a:0,e:"初次見面要回應「はじめまして」。"},
+{t:"conv",q:"A：どうぞよろしくおねがいします。B：＿＿＿＿。",o:["こちらこそ、よろしくおねがいします","いいえ、ちがいます","そうですか","はじめまして"],a:0,e:"回應「よろしく」要講「こちらこそ」。"},
+{t:"tf",q:"「あなた」係最禮貌嘅稱呼方式。",o:["○","×"],a:1,e:"錯。「あなた」唔係最禮貌，通常叫姓氏加「さん」。"},
+{t:"tf",q:"「せんせい」只可以用嚟叫學校老師。",o:["○","×"],a:1,e:"錯。「せんせい」仲可以用嚟叫醫生、律師等專業人士。"},
+{t:"tf",q:"「は」做助詞時讀音係 wa。",o:["○","×"],a:0,e:"對。「は」做主題助詞時讀 wa。"},
+{t:"tf",q:"「じゃありません」係肯定句。",o:["○","×"],a:1,e:"錯。「じゃありません」係否定句。"},
+{t:"combo",q:"「わたし」同「あなた」嘅正確配對係？",o:["我／你","你／我","我／他","他／你"],a:0,e:"「わたし」係我，「あなた」係你。"},
+{t:"combo",q:"「がくせい」同「せんせい」嘅正確配對係？",o:["學生／老師","老師／學生","學生／醫生","醫生／老師"],a:0,e:"「がくせい」係學生，「せんせい」係老師。"},
+{t:"apply",q:"你第一次見到日本人，應該講咩？",o:["さようなら","はじめまして","おやすみなさい","いただきます"],a:1,e:"初次見面要講「はじめまして」。"},
+{t:"apply",q:"有人問你「あなたはがくせいですか」，你唔係學生，應該點答？",o:["はい、がくせいです","いいえ、がくせいじゃありません","はい、せんせいです","いいえ、がくせいです"],a:1,e:"否定回答要用「いいえ」加否定句。"},
+{t:"apply",q:"你想介紹自己係從香港嚟，應該點講？",o:["ホンコンからきました","ホンコンへいきます","ホンコンにいます","ホンコンじんです"],a:0,e:"「からきました」表示從某地嚟。"}
+]
+},
+2:{
+title:"第2課：これ・それ・あれ（指示代名詞）",
+tutorial:[
+{c:"歡迎嚟到第二課。今課我哋會學指示代名詞，即係「呢個」「嗰個」嘅講法，同埋一啲日常物品嘅名稱。",j:""},
+{c:"「これ」讀做 kore，意思係「這個」，指近說話者嘅物品。例如「これは ほん です」即係「呢個係書」。",j:"これは ほん です"},
+{c:"「それ」讀做 sore，意思係「那個」，指近聽話者嘅物品。例如「それは なんですか」即係「嗰個係咩？」。",j:"それは なんですか"},
+{c:"「あれ」讀做 are，意思係「那個」，指離雙方都遠嘅物品。",j:"あれ"},
+{c:"「この」讀做 kono，係連體詞，後面一定要接名詞，例如「このほん」即係「這本書」。",j:"このほん"},
+{c:"「その」讀做 sono，後面接名詞，例如「そのかばん」即係「那個包包」。",j:"そのかばん"},
+{c:"「あの」讀做 ano，後面接名詞，例如「あのひと」即係「那個人」。",j:"あのひと"},
+{c:"「ほん」讀做 hon，意思係書。「じしょ」讀做 jisho，意思係字典。",j:"ほん、じしょ"},
+{c:"「ざっし」讀做 zasshi，意思係雜誌。「しんぶん」讀做 shinbun，意思係報紙。",j:"ざっし、しんぶん"},
+{c:"「ノート」讀做 nooto，係筆記本。「てちょう」讀做 techou，係記事本。「めいし」讀做 meishi，係名片。",j:"ノート、てちょう、めいし"},
+{c:"「えんぴつ」讀做 enpitsu，係鉛筆。「ボールペン」係原子筆。「シャープペンシル」係自動鉛筆。",j:"えんぴつ、ボールペン、シャープペンシル"},
+{c:"「かぎ」讀做 kagi，係鑰匙。「とけい」讀做 tokei，係時鐘或者手錶。",j:"かぎ、とけい"},
+{c:"「かさ」讀做 kasa，係雨傘。「かばん」讀做 kaban，係包包。",j:"かさ、かばん"},
+{c:"「テレビ」係電視，「ラジオ」係收音機，「カメラ」係照相機，「コンピューター」係電腦。",j:"テレビ、ラジオ、カメラ、コンピューター"},
+{c:"「くるま」讀做 kuruma，係車。「つくえ」讀做 tsukue，係桌子。「いす」讀做 isu，係椅子。",j:"くるま、つくえ、いす"},
+{c:"「チョコレート」係巧克力，「コーヒー」係咖啡，「おみやげ」係伴手禮。",j:"チョコレート、コーヒー、おみやげ"},
+{c:"「えいご」係英文，「にほんご」係日文。",j:"えいご、にほんご"},
+{c:"「なん」讀做 nan，係「咩」。「そう」讀做 sou，係「係咁樣」。",j:"なん、そう"},
+{c:"跟住講文法。第一個句型係「これ／それ／あれは～です」，用嚟指出物品。",j:""},
+{c:"第二個句型係「この／その／あの＋名詞」，用嚟修飾名詞。記住「この」後面一定要接名詞。",j:"このほん"},
+{c:"第三個句型係「～は なんですか」，用嚟問「～係咩？」。回答直接講物品名稱就得。",j:"それは なんですか"},
+{c:"如果對方估錯咗，我哋可以講「ちがいます」，即係「唔係」。",j:"ちがいます"},
+{c:"「どうぞ」係遞嘢畀人時講嘅「請」。「どうも ありがとう ございます」係「非常感謝」。",j:"どうぞ、どうも ありがとう ございます"},
+{c:"「あのう」係引起注意嘅「嗯…」，「えっ」係表示驚訝嘅「咦？」。",j:"あのう、えっ"}
+],
+vocab:[
+{jp:"これ",ro:"kore",cn:"這個"},{jp:"それ",ro:"sore",cn:"那個"},
+{jp:"あれ",ro:"are",cn:"那個（遠處）"},{jp:"この",ro:"kono",cn:"這個～"},
+{jp:"その",ro:"sono",cn:"那個～"},{jp:"あの",ro:"ano",cn:"那個～（遠處）"},
+{jp:"ほん",ro:"hon",cn:"書"},{jp:"じしょ",ro:"jisho",cn:"字典"},
+{jp:"ざっし",ro:"zasshi",cn:"雜誌"},{jp:"しんぶん",ro:"shinbun",cn:"報紙"},
+{jp:"ノート",ro:"nooto",cn:"筆記本"},{jp:"てちょう",ro:"techou",cn:"記事本"},
+{jp:"めいし",ro:"meishi",cn:"名片"},{jp:"えんぴつ",ro:"enpitsu",cn:"鉛筆"},
+{jp:"ボールペン",ro:"boorupen",cn:"原子筆"},{jp:"かぎ",ro:"kagi",cn:"鑰匙"},
+{jp:"とけい",ro:"tokei",cn:"時鐘／手錶"},{jp:"かさ",ro:"kasa",cn:"雨傘"},
+{jp:"かばん",ro:"kaban",cn:"包包"},{jp:"テレビ",ro:"terebi",cn:"電視"},
+{jp:"ラジオ",ro:"rajio",cn:"收音機"},{jp:"カメラ",ro:"kamera",cn:"照相機"},
+{jp:"コンピューター",ro:"konpyuutaa",cn:"電腦"},{jp:"くるま",ro:"kuruma",cn:"車"},
+{jp:"つくえ",ro:"tsukue",cn:"桌子"},{jp:"いす",ro:"isu",cn:"椅子"},
+{jp:"チョコレート",ro:"chokoreeto",cn:"巧克力"},{jp:"コーヒー",ro:"koohii",cn:"咖啡"},
+{jp:"おみやげ",ro:"omiyage",cn:"伴手禮"},{jp:"なん",ro:"nan",cn:"什麼"},
+{jp:"ちがいます",ro:"chigaimasu",cn:"不對"},{jp:"どうぞ",ro:"douzo",cn:"請"}
+],
+grammar:[
+{p:"これ／それ／あれは～です",m:"這個／那個／那個（遠處）係～",e:"これはほんです。<br><span class='ro'>kore wa hon desu.</span><br>這是書。"},
+{p:"この／その／あの～",m:"這個～／那個～（後接名詞）",e:"このほんはわたしのです。<br><span class='ro'>kono hon wa watashi no desu.</span><br>這本書是我的。"},
+{p:"～はなんですか",m:"～係咩？",e:"それはなんですか。<br><span class='ro'>sore wa nan desuka.</span><br>那是什麼？"},
+{p:"ちがいます",m:"唔係（否定對方猜測）",e:"いいえ、ちがいます。<br><span class='ro'>iie, chigaimasu.</span><br>不，不是那樣。"}
+],
+quiz:[
+{t:"mc",q:"「これ」嘅意思係？",o:["這個","那個","那個（遠處）","哪個"],a:0,e:"「これ」指近說話者嘅物品。"},
+{t:"mc",q:"「それ」嘅意思係？",o:["這個","那個","那個（遠處）","哪個"],a:1,e:"「それ」指近聽話者嘅物品。"},
+{t:"mc",q:"「あれ」嘅意思係？",o:["這個","那個","那個（遠處）","哪個"],a:2,e:"「あれ」指離雙方都遠嘅物品。"},
+{t:"mc",q:"「この」後面應該接咩？",o:["動詞","形容詞","名詞","助詞"],a:2,e:"「この」係連體詞，後面一定要接名詞。"},
+{t:"mc",q:"「ほん」嘅意思係？",o:["書","字典","雜誌","報紙"],a:0,e:"「ほん」漢字係「本」，意思係書。"},
+{t:"mc",q:"「じしょ」嘅意思係？",o:["書","字典","雜誌","報紙"],a:1,e:"「じしょ」漢字係「辞書」，意思係字典。"},
+{t:"mc",q:"「ざっし」嘅意思係？",o:["書","字典","雜誌","報紙"],a:2,e:"「ざっし」漢字係「雑誌」，意思係雜誌。"},
+{t:"mc",q:"「しんぶん」嘅意思係？",o:["書","字典","雜誌","報紙"],a:3,e:"「しんぶん」漢字係「新聞」，意思係報紙。"},
+{t:"mc",q:"「えんぴつ」嘅意思係？",o:["鉛筆","原子筆","自動鉛筆","擦膠"],a:0,e:"「えんぴつ」漢字係「鉛筆」。"},
+{t:"mc",q:"「かばん」嘅意思係？",o:["鞋子","包包","帽子","襪子"],a:1,e:"「かばん」漢字係「鞄」，意思係包包。"},
+{t:"mc",q:"「とけい」嘅意思係？",o:["桌子","椅子","時鐘／手錶","車"],a:2,e:"「とけい」漢字係「時計」。"},
+{t:"mc",q:"「かさ」嘅意思係？",o:["帽子","雨傘","鞋子","襪子"],a:1,e:"「かさ」漢字係「傘」，意思係雨傘。"},
+{t:"mc",q:"「それはなんですか」嘅正確回答係？",o:["はい、そうです","これはほんです","いいえ、ちがいます","どこですか"],a:1,e:"問「那是什麼」，應回答物品名稱。"},
+{t:"mc",q:"「ちがいます」嘅意思係？",o:["係","唔係","多謝","再見"],a:1,e:"「ちがいます」漢字係「違います」，意思係「唔係」。"},
+{t:"mc",q:"「どうぞ」通常喺咩時候講？",o:["道別時","遞嘢畀人時","食飯前","瞓覺前"],a:1,e:"「どうぞ」係遞東西或者請對方先做某事時講。"},
+{t:"fill",q:"請填入適當嘅詞彙：これは（　）です。（呢個係書）",o:["ほん","かばん","とけい","かさ"],a:0,e:"「ほん」係書。"},
+{t:"fill",q:"請填入適當嘅詞彙：それは（　）です。（嗰個係雜誌）",o:["しんぶん","ざっし","じしょ","ノート"],a:1,e:"「ざっし」係雜誌。"},
+{t:"fill",q:"請填入適當嘅詞彙：（　）はなんですか。（嗰個係咩？）",o:["これ","それ","あれ","どれ"],a:1,e:"問對方附近嘅嘢用「それ」。"},
+{t:"trans",q:"「これはわたしのほんです」嘅中文意思係？",o:["這是我的書","那是你的書","這是你的書","那是我的書"],a:0,e:"「これ」係這個，「わたしの」係我的。"},
+{t:"trans",q:"「那是什麼？」嘅日文係？",o:["これはなんですか","それはなんですか","あれはなんですか","どれはなんですか"],a:1,e:"「それ」係那個，「なんですか」係什麼。"},
+{t:"reorder",q:"請選出正確嘅排列：①は ②これ ③です ④ほん",o:["②①④③","①④②③","②④①③","④②①③"],a:0,e:"正確係「これはほんです」，即②①④③。"},
+{t:"match",q:"「この」同「これ」嘅分別係？",o:["完全一樣","「この」後面要接名詞","「これ」後面要接名詞","「この」係動詞"],a:1,e:"「これ」可以單獨使用，「この」後面一定要接名詞。"},
+{t:"fix",q:"以下邊句有錯？",o:["これはほんです","そのかばんはわたしのです","このはほんです","あれはテレビです"],a:2,e:"「この」後面一定要接名詞，唔可以單獨用「このは」。"},
+{t:"qa",q:"「それはなんですか」嘅正確回答係？",o:["これはほんです","はい、そうです","いいえ、ちがいます","どこですか"],a:0,e:"問「那是什麼」，回答物品名稱。"},
+{t:"conv",q:"A：それはなんですか。B：＿＿＿＿。",o:["これはかばんです","はい、そうです","いいえ、ちがいます","そうですか"],a:0,e:"回答物品名稱「これはかばんです」。"},
+{t:"tf",q:"「あれ」指離雙方都遠嘅物品。",o:["○","×"],a:0,e:"對。「あれ」係離說話者同聽話者都遠嘅嘢。"},
+{t:"tf",q:"「この」可以單獨使用。",o:["○","×"],a:1,e:"錯。「この」後面一定要接名詞。"},
+{t:"tf",q:"「ちがいます」用嚟表示同意。",o:["○","×"],a:1,e:"錯。「ちがいます」係「唔係」，表示否定。"},
+{t:"combo",q:"「ほん」同「じしょ」嘅正確配對係？",o:["書／字典","字典／書","雜誌／報紙","報紙／雜誌"],a:0,e:"「ほん」係書，「じしょ」係字典。"},
+{t:"combo",q:"「テレビ」同「ラジオ」嘅正確配對係？",o:["收音機／電視","電視／收音機","電腦／相機","相機／電腦"],a:1,e:"「テレビ」係電視，「ラジオ」係收音機。"},
+{t:"apply",q:"朋友指住你手上嘅書問「それはなんですか」，你應該點答？",o:["これはほんです","それはほんです","あれはほんです","はい、ほんです"],a:0,e:"對方指住你手上嘅書，你回答時用「これ」。"},
+{t:"apply",q:"有人遞禮物畀你，你應該講咩？",o:["どうぞ","どうもありがとうございます","ちがいます","そうですか"],a:1,e:"收到禮物要講「どうもありがとうございます」。"},
+{t:"apply",q:"你想問「嗰個係咩」，應該點講？",o:["これはなんですか","それはなんですか","あれはなんですか","どれはなんですか"],a:1,e:"「それ」係對方附近嘅嘢。"}
+]
+},
+3:{
+title:"第3課：ここ・そこ・あそこ（場所指示）",
+tutorial:[
+{c:"歡迎嚟到第三課。今課我哋會學場所指示詞，同埋購物用語。",j:""},
+{c:"「ここ」讀做 koko，意思係「這裡」，指說話者所在嘅地方。",j:"ここ"},
+{c:"「そこ」讀做 soko，意思係「那裡」，指聽話者附近嘅地方。",j:"そこ"},
+{c:"「あそこ」讀做 asoko，意思係「那裡」，指離雙方都遠嘅地方。",j:"あそこ"},
+{c:"「どこ」讀做 doko，意思係「哪裡」。",j:"どこ"},
+{c:"「こちら」「そちら」「あちら」「どちら」係禮貌版，分別對應ここ、そこ、あそこ、どこ。",j:"こちら、そちら、あちら、どちら"},
+{c:"「きょうしつ」讀做 kyoushitsu，意思係教室。「しょくどう」讀做 shokudou，意思係食堂。",j:"きょうしつ、しょくどう"},
+{c:"「じむしょ」係辦公室，「かいぎしょ」係會議室，「うけつけ」係接待處。",j:"じむしょ、かいぎしょ、うけつけ"},
+{c:"「ロビー」係大廳，「へや」係房間。「トイレ」係廁所，「おてあらい」係更禮貌嘅講法。",j:"ロビー、へや、トイレ、おてあらい"},
+{c:"「かいだん」係樓梯，「エスカレーター」係電扶梯。「じどうはんばいき」係自動販賣機。",j:"かいだん、エスカレーター、じどうはんばいき"},
+{c:"「でんわ」係電話，「くつ」係鞋，「くつした」係襪，「ネクタイ」係領帶，「ワイン」係葡萄酒。",j:"でんわ、くつ、くつした、ネクタイ、ワイン"},
+{c:"「うりば」係賣場，「ちか」係地下，「なんがい」係幾樓。",j:"うりば、ちか、なんがい"},
+{c:"「えん」係日圓，「いくら」係問價錢。「ひゃく」係百，「せん」係千，「まん」係萬。",j:"えん、いくら、ひゃく、せん、まん"},
+{c:"購物時想睇商品，可以講「それを みせてください」。",j:"それを みせてください"},
+{c:"想買就講「これを ください」，即係「請畀我呢個」。",j:"これを ください"},
+{c:"問價錢講「いくらですか」，例如「これは いくらですか」。",j:"これは いくらですか"},
+{c:"「いらっしゃいませ」係店員歡迎顧客嘅講法。",j:"いらっしゃいませ"},
+{c:"「すみません」可以用嚟道歉或者引起注意，類似英文嘅 excuse me。",j:"すみません"},
+{c:"跟住講文法。第一個句型係「ここ／そこ／あそことは～です」，用嚟指出場所。",j:""},
+{c:"第二個句型係「～は どこですか」，用嚟問「～喺邊度？」。",j:"トイレは どこですか"},
+{c:"第三個句型係「～を ください」，用嚟請求物品。",j:"これを ください"},
+{c:"第四個句型係「～を みせて ください」，用嚟要求睇商品。",j:"それを みせて ください"},
+{c:"第五個句型係「～は いくらですか」，用嚟問價錢。",j:"これは いくらですか"},
+{c:"「じゃ」係「那麼」，用於轉換話題或者道別。",j:"じゃ"}
+],
+vocab:[
+{jp:"ここ",ro:"koko",cn:"這裡"},{jp:"そこ",ro:"soko",cn:"那裡"},
+{jp:"あそこ",ro:"asoko",cn:"那裡（遠處）"},{jp:"どこ",ro:"doko",cn:"哪裡"},
+{jp:"こちら",ro:"kochira",cn:"這邊（禮貌）"},{jp:"そちら",ro:"sochira",cn:"那邊（禮貌）"},
+{jp:"あちら",ro:"achira",cn:"那邊（禮貌，遠處）"},{jp:"どちら",ro:"dochira",cn:"哪邊（禮貌）"},
+{jp:"きょうしつ",ro:"kyoushitsu",cn:"教室"},{jp:"しょくどう",ro:"shokudou",cn:"食堂"},
+{jp:"じむしょ",ro:"jimusho",cn:"辦公室"},{jp:"かいぎしょ",ro:"kaigisho",cn:"會議室"},
+{jp:"うけつけ",ro:"uketsuke",cn:"接待處"},{jp:"ロビー",ro:"robii",cn:"大廳"},
+{jp:"へや",ro:"heya",cn:"房間"},{jp:"トイレ",ro:"toire",cn:"廁所"},
+{jp:"おてあらい",ro:"otearai",cn:"洗手間（禮貌）"},{jp:"かいだん",ro:"kaidan",cn:"樓梯"},
+{jp:"エスカレーター",ro:"esukareetaa",cn:"電扶梯"},{jp:"じどうはんばいき",ro:"jidouhanbaiki",cn:"自動販賣機"},
+{jp:"でんわ",ro:"denwa",cn:"電話"},{jp:"くつ",ro:"kutsu",cn:"鞋子"},
+{jp:"くつした",ro:"kutsushita",cn:"襪子"},{jp:"ネクタイ",ro:"nekutai",cn:"領帶"},
+{jp:"ワイン",ro:"wain",cn:"葡萄酒"},{jp:"うりば",ro:"uriba",cn:"賣場"},
+{jp:"ちか",ro:"chika",cn:"地下"},{jp:"なんがい",ro:"nangai",cn:"幾樓"},
+{jp:"えん",ro:"en",cn:"日圓"},{jp:"いくら",ro:"ikura",cn:"多少錢"},
+{jp:"ひゃく",ro:"hyaku",cn:"百"},{jp:"せん",ro:"sen",cn:"千"},
+{jp:"まん",ro:"man",cn:"萬"},{jp:"いらっしゃいませ",ro:"irasshaimase",cn:"歡迎光臨"},
+{jp:"をみせてください",ro:"o misete kudasai",cn:"請給我看"},{jp:"ください",ro:"kudasai",cn:"請給我"},
+{jp:"すみません",ro:"sumimasen",cn:"不好意思"},{jp:"じゃ",ro:"ja",cn:"那麼"}
+],
+grammar:[
+{p:"ここ／そこ／あそことは～です",m:"這裡／那裡／那裡（遠處）係～",e:"ここはきょうしつです。<br><span class='ro'>koko wa kyoushitsu desu.</span><br>這裡是教室。"},
+{p:"～はどこですか",m:"～喺邊度？",e:"トイレはどこですか。<br><span class='ro'>toire wa doko desuka.</span><br>廁所在哪裡？"},
+{p:"～をください",m:"請畀我～",e:"これをください。<br><span class='ro'>kore o kudasai.</span><br>請給我這個。"},
+{p:"～をみせてください",m:"請畀我睇～",e:"そのかばんをみせてください。<br><span class='ro'>sono kaban o misete kudasai.</span><br>請給我看那個包包。"},
+{p:"～はいくらですか",m:"～幾多錢？",e:"これはいくらですか。<br><span class='ro'>kore wa ikura desuka.</span><br>這個多少錢？"}
+],
+quiz:[
+{t:"mc",q:"「ここ」嘅意思係？",o:["這裡","那裡","那裡（遠處）","哪裡"],a:0,e:"「ここ」指說話者所在嘅地方。"},
+{t:"mc",q:"「そこ」嘅意思係？",o:["這裡","那裡","那裡（遠處）","哪裡"],a:1,e:"「そこ」指聽話者附近嘅地方。"},
+{t:"mc",q:"「あそこ」嘅意思係？",o:["這裡","那裡","那裡（遠處）","哪裡"],a:2,e:"「あそこ」指離雙方都遠嘅地方。"},
+{t:"mc",q:"「どこ」嘅意思係？",o:["這裡","那裡","那裡（遠處）","哪裡"],a:3,e:"「どこ」係疑問詞，問「哪裡」。"},
+{t:"mc",q:"「きょうしつ」嘅意思係？",o:["教室","食堂","辦公室","接待處"],a:0,e:"「きょうしつ」漢字係「教室」。"},
+{t:"mc",q:"「しょくどう」嘅意思係？",o:["教室","食堂","辦公室","接待處"],a:1,e:"「しょくどう」漢字係「食堂」。"},
+{t:"mc",q:"「うけつけ」嘅意思係？",o:["教室","食堂","辦公室","接待處"],a:3,e:"「うけつけ」漢字係「受付」，係接待處。"},
+{t:"mc",q:"「トイレ」嘅禮貌講法係？",o:["おてあらい","へや","ロビー","かいだん"],a:0,e:"「おてあらい」係「洗手間」嘅禮貌講法。"},
+{t:"mc",q:"「くつ」嘅意思係？",o:["襪","鞋","領帶","葡萄酒"],a:1,e:"「くつ」漢字係「靴」，意思係鞋。"},
+{t:"mc",q:"「ネクタイ」嘅意思係？",o:["襪","鞋","領帶","葡萄酒"],a:2,e:"「ネクタイ」係領帶，嚟自英文 necktie。"},
+{t:"mc",q:"「いくら」用嚟問咩？",o:["時間","地點","價錢","人物"],a:2,e:"「いくら」係問價錢嘅疑問詞。"},
+{t:"mc",q:"「いらっしゃいませ」係邊個講嘅？",o:["顧客","店員","老師","學生"],a:1,e:"「いらっしゃいませ」係店員歡迎顧客嘅固定用語。"},
+{t:"mc",q:"「これをください」嘅意思係？",o:["請畀我睇這個","請畀我呢個","這個幾多錢","這個係咩"],a:1,e:"「～をください」係「請畀我～」。"},
+{t:"mc",q:"「それをみせてください」嘅意思係？",o:["請畀我睇嗰個","請畀我嗰個","嗰個幾多錢","嗰個係咩"],a:0,e:"「～をみせてください」係「請畀我睇～」。"},
+{t:"mc",q:"「すみません」唔可以用喺以下邊種情況？",o:["道歉","引起注意","道謝","自我介紹"],a:3,e:"「すみません」可以道歉、引起注意、輕微道謝，但唔用於自我介紹。"},
+{t:"fill",q:"請填入適當嘅詞彙：トイレは（　）ですか。",o:["どこ","いくら","だれ","なん"],a:0,e:"問廁所喺邊度，用「どこ」。"},
+{t:"fill",q:"請填入適當嘅詞彙：これは（　）ですか。（幾多錢）",o:["どこ","いくら","だれ","なん"],a:1,e:"問價錢用「いくら」。"},
+{t:"fill",q:"請填入適當嘅詞彙：（　）をください。（請畀我呢個）",o:["これ","それ","あれ","どれ"],a:0,e:"買嘢時用「これをください」。"},
+{t:"trans",q:"「トイレはどこですか」嘅中文意思係？",o:["廁所在哪裡？","廁所多少錢？","這是廁所嗎？","廁所是這個嗎？"],a:0,e:"「どこ」係問哪裡。"},
+{t:"trans",q:"「請給我看那個包包」嘅日文係？",o:["そのかばんをください","そのかばんをみせてください","そのかばんはいくらですか","そのかばんはなんですか"],a:1,e:"「みせてください」係請給我看。"},
+{t:"reorder",q:"請選出正確嘅排列：①は ②トイレ ③どこ ④ですか",o:["②①③④","①③②④","②③①④","③②①④"],a:0,e:"正確係「トイレはどこですか」，即②①③④。"},
+{t:"match",q:"「こちら」係邊個嘅禮貌版？",o:["ここ","そこ","あそこ","どこ"],a:0,e:"「こちら」係「ここ」嘅禮貌講法。"},
+{t:"fix",q:"以下邊句有錯？",o:["ここはきょうしつです","トイレはどこですか","これをください","ここはどこですか"],a:3,e:"「ここはどこですか」意思係「這裡是哪裡？」，但說話者應該知道自己喺邊，通常唔會咁問，語境奇怪。"},
+{t:"qa",q:"「これはいくらですか」嘅正確回答係？",o:["500えんです","はい、そうです","いいえ、ちがいます","ここです"],a:0,e:"問價錢要回答金額。"},
+{t:"conv",q:"A：すみません、トイレはどこですか。B：＿＿＿＿。",o:["あそこです","500えんです","はい、そうです","これはトイレです"],a:0,e:"問廁所喺邊，回答位置「あそこです」。"},
+{t:"tf",q:"「おてあらい」比「トイレ」更禮貌。",o:["○","×"],a:0,e:"對。「おてあらい」係洗手間嘅禮貌講法。"},
+{t:"tf",q:"「いくら」用嚟問時間。",o:["○","×"],a:1,e:"錯。「いくら」係問價錢。"},
+{t:"tf",q:"「いらっしゃいませ」係顧客對店員講嘅。",o:["○","×"],a:1,e:"錯。係店員對顧客講嘅。"},
+{t:"combo",q:"「くつ」同「くつした」嘅正確配對係？",o:["鞋／襪","襪／鞋","鞋／領帶","領帶／鞋"],a:0,e:"「くつ」係鞋，「くつした」係襪。"},
+{t:"combo",q:"「うりば」同「ちか」嘅正確配對係？",o:["賣場／地下","地下／賣場","接待處／大廳","大廳／接待處"],a:0,e:"「うりば」係賣場，「ちか」係地下。"},
+{t:"apply",q:"你喺百貨公司想問鞋嘅賣場喺邊，應該點講？",o:["くつのうりばはどこですか","くつはいくらですか","くつをください","くつをみせてください"],a:0,e:"問賣場位置用「～はどこですか」。"},
+{t:"apply",q:"你想買嗰個包包，應該同店員講咩？",o:["そのかばんをみせてください","そのかばんをください","そのかばんはいくらですか","そのかばんはなんですか"],a:1,e:"想買就講「～をください」。"},
+{t:"apply",q:"你想問「呢個幾多錢」，應該點講？",o:["これはいくらですか","これはどこですか","これはなんですか","これはだれですか"],a:0,e:"問價錢用「いくら」。"}
+]
+},
+4:{
+title:"第4課：おきます・ねます（動詞與時間）",
+tutorial:[
+{c:"歡迎嚟到第四課。今課我哋會學動詞嘅ます形、時間表達、同埋星期。",j:""},
+{c:"「おきます」讀做 okimasu，意思係起床。例如「まいあさ 6じに おきます」。",j:"おきます"},
+{c:"「ねます」讀做 nemasu，意思係睡覺。例如「まいばん 11じに ねます」。",j:"ねます"},
+{c:"「はたらきます」讀做 hatarakimasu，意思係工作。",j:"はたらきます"},
+{c:"「やすみます」讀做 yasumimasu，意思係休息。",j:"やすみます"},
+{c:"「べんきょうします」讀做 benkyoushimasu，意思係學習。",j:"べんきょうします"},
+{c:"「おわります」讀做 owarimasu，意思係結束。",j:"おわります"},
+{c:"時間方面，「いま」係現在，「なんじ」係幾點。「じ」係點，「ふん」或者「ぷん」係分。",j:"いま、なんじ"},
+{c:"「ごぜん」係上午，「ごご」係下午。「あさ」係朝早，「ひる」係中午，「ばん」係晚上。",j:"ごぜん、ごご、あさ、ひる、ばん"},
+{c:"日期方面，「きのう」係昨天，「きょう」係今天，「あした」係明天。",j:"きのう、きょう、あした"},
+{c:"「おととい」係前天，「あさって」係後天。「けさ」係今朝，「こんばん」係今晚。",j:"おととい、あさって、けさ、こんばん"},
+{c:"星期方面，「げつようび」係星期一，「かようび」係星期二，「すいようび」係星期三。",j:"げつようび、かようび、すいようび"},
+{c:"「もくようび」係星期四，「きんようび」係星期五，「どようび」係星期六，「にちようび」係星期日。",j:"もくようび、きんようび、どようび、にちようび"},
+{c:"「なんようび」係問「星期幾」。",j:"なんようび"},
+{c:"「デパート」係百貨公司，「ぎんこう」係銀行，「ゆうびんきょく」係郵局。",j:"デパート、ぎんこう、ゆうびんきょく"},
+{c:"「としょかん」係圖書館，「びじゅつかん」係美術館。",j:"としょかん、びじゅつかん"},
+{c:"「しけん」係考試，「かいぎ」係會議，「えいが」係電影。",j:"しけん、かいぎ、えいが"},
+{c:"「まいあさ」係每天早上，「まいばん」係每天晚上，「まいにち」係每天。",j:"まいあさ、まいばん、まいにち"},
+{c:"跟住講文法。動詞ます形有四種時態：ます、ません、ました、ませんでした。",j:""},
+{c:"「ます」係現在肯定，「ません」係現在否定，「ました」係過去肯定，「ませんでした」係過去否定。",j:"ます、ません、ました、ませんでした"},
+{c:"例如「たべます」係食，「たべません」係唔食，「たべました」係食咗，「たべませんでした」係冇食。",j:"たべます、たべません、たべました、たべませんでした"},
+{c:"「から」表示起點，「まで」表示終點，例如「9じから 5じまで はたらきます」。",j:"9じから 5じまで はたらきます"},
+{c:"具體時間後面加「に」，例如「6じに おきます」即係6點起床。",j:"6じに おきます"},
+{c:"「と」用嚟列舉全部，例如「パンと たまご」即係麵包同蛋。",j:"パンと たまご"},
+{c:"「たいへんですね」係表示同情嘅「真辛苦啊」。",j:"たいへんですね"}
+],
+vocab:[
+{jp:"おきます",ro:"okimasu",cn:"起床"},{jp:"ねます",ro:"nemasu",cn:"睡覺"},
+{jp:"はたらきます",ro:"hatarakimasu",cn:"工作"},{jp:"やすみます",ro:"yasumimasu",cn:"休息"},
+{jp:"べんきょうします",ro:"benkyoushimasu",cn:"學習"},{jp:"おわります",ro:"owarimasu",cn:"結束"},
+{jp:"デパート",ro:"depaato",cn:"百貨公司"},{jp:"ぎんこう",ro:"ginkou",cn:"銀行"},
+{jp:"ゆうびんきょく",ro:"yuubinkyoku",cn:"郵局"},{jp:"としょかん",ro:"toshokan",cn:"圖書館"},
+{jp:"びじゅつかん",ro:"bijutsukan",cn:"美術館"},{jp:"いま",ro:"ima",cn:"現在"},
+{jp:"じ",ro:"ji",cn:"～點"},{jp:"ふん／ぷん",ro:"fun / pun",cn:"～分"},
+{jp:"はん",ro:"han",cn:"半"},{jp:"なんじ",ro:"nanji",cn:"幾點"},
+{jp:"ごぜん",ro:"gozen",cn:"上午"},{jp:"ごご",ro:"gogo",cn:"下午"},
+{jp:"あさ",ro:"asa",cn:"早上"},{jp:"ひる",ro:"hiru",cn:"中午"},
+{jp:"ばん",ro:"ban",cn:"晚上"},{jp:"きのう",ro:"kinou",cn:"昨天"},
+{jp:"きょう",ro:"kyou",cn:"今天"},{jp:"あした",ro:"ashita",cn:"明天"},
+{jp:"おととい",ro:"ototoi",cn:"前天"},{jp:"あさって",ro:"asatte",cn:"後天"},
+{jp:"けさ",ro:"kesa",cn:"今天早上"},{jp:"こんばん",ro:"konban",cn:"今天晚上"},
+{jp:"やすみ",ro:"yasumi",cn:"假日"},{jp:"ひるやすみ",ro:"hiruyasumi",cn:"午休"},
+{jp:"しけん",ro:"shiken",cn:"考試"},{jp:"かいぎ",ro:"kaigi",cn:"會議"},
+{jp:"えいが",ro:"eiga",cn:"電影"},{jp:"まいあさ",ro:"maiasa",cn:"每天早上"},
+{jp:"まいばん",ro:"maiban",cn:"每天晚上"},{jp:"まいにち",ro:"mainichi",cn:"每天"},
+{jp:"げつようび",ro:"getsuyoubi",cn:"星期一"},{jp:"かようび",ro:"kayoubi",cn:"星期二"},
+{jp:"すいようび",ro:"suiyoubi",cn:"星期三"},{jp:"もくようび",ro:"mokuyoubi",cn:"星期四"},
+{jp:"きんようび",ro:"kinyoubi",cn:"星期五"},{jp:"どようび",ro:"doyoubi",cn:"星期六"},
+{jp:"にちようび",ro:"nichiyoubi",cn:"星期日"},{jp:"なんようび",ro:"nanyoubi",cn:"星期幾"},
+{jp:"から",ro:"kara",cn:"從～"},{jp:"まで",ro:"made",cn:"到～"},
+{jp:"と",ro:"to",cn:"和～"},{jp:"たいへんですね",ro:"taihen desune",cn:"真辛苦啊"}
+],
+grammar:[
+{p:"動詞ます形（現在肯定）",m:"做～",e:"まいあさ6じにおきます。<br><span class='ro'>maiasa rokuji ni okimasu.</span><br>每天早上6點起床。"},
+{p:"動詞ません（現在否定）",m:"唔做～",e:"きょうははたらきません。<br><span class='ro'>kyou wa hatarakimasen.</span><br>今天不工作。"},
+{p:"動詞ました（過去肯定）",m:"做咗～",e:"きのうべんきょうしました。<br><span class='ro'>kinou benkyoushimashita.</span><br>昨天學習了。"},
+{p:"動詞ませんでした（過去否定）",m:"冇做～",e:"きのうテレビをみませんでした。<br><span class='ro'>kinou terebi o mimasen deshita.</span><br>昨天沒看電視。"},
+{p:"～から～まで",m:"從～到～",e:"9じから5じまではたらきます。<br><span class='ro'>kuji kara goji made hatarakimasu.</span><br>從9點工作到5點。"},
+{p:"～に（時間點）",m:"喺～（具體時間）",e:"3がつ25にちににほんへきました。<br><span class='ro'>sangatsu nijuugonichi ni nihon e kimashita.</span><br>3月25日來日本的。"}
+],
+quiz:[
+{t:"mc",q:"「おきます」嘅意思係？",o:["睡覺","起床","工作","休息"],a:1,e:"「おきます」漢字係「起きます」，意思係起床。"},
+{t:"mc",q:"「ねます」嘅意思係？",o:["睡覺","起床","工作","休息"],a:0,e:"「ねます」漢字係「寝ます」，意思係睡覺。"},
+{t:"mc",q:"「はたらきます」嘅意思係？",o:["睡覺","起床","工作","休息"],a:2,e:"「はたらきます」漢字係「働きます」，意思係工作。"},
+{t:"mc",q:"「べんきょうします」嘅意思係？",o:["休息","學習","結束","起床"],a:1,e:"「べんきょうします」漢字係「勉強します」，意思係學習。"},
+{t:"mc",q:"「なんじ」用嚟問咩？",o:["日期","價錢","時間","地點"],a:2,e:"「なんじ」係問「幾點」。"},
+{t:"mc",q:"「ごぜん」嘅意思係？",o:["上午","下午","晚上","中午"],a:0,e:"「ごぜん」漢字係「午前」，即上午。"},
+{t:"mc",q:"「ごご」嘅意思係？",o:["上午","下午","晚上","中午"],a:1,e:"「ごご」漢字係「午後」，即下午。"},
+{t:"mc",q:"「きのう」嘅意思係？",o:["今天","明天","昨天","前天"],a:2,e:"「きのう」漢字係「昨日」，即昨天。"},
+{t:"mc",q:"「あした」嘅意思係？",o:["今天","明天","昨天","後天"],a:1,e:"「あした」漢字係「明日」，即明天。"},
+{t:"mc",q:"「げつようび」係星期幾？",o:["星期一","星期二","星期三","星期四"],a:0,e:"「げつようび」漢字係「月曜日」，即星期一。"},
+{t:"mc",q:"「きんようび」係星期幾？",o:["星期三","星期四","星期五","星期六"],a:2,e:"「きんようび」漢字係「金曜日」，即星期五。"},
+{t:"mc",q:"「にちようび」係星期幾？",o:["星期五","星期六","星期日","星期一"],a:2,e:"「にちようび」漢字係「日曜日」，即星期日。"},
+{t:"mc",q:"「たべませんでした」係咩時態？",o:["現在肯定","現在否定","過去肯定","過去否定"],a:3,e:"「ませんでした」係過去否定。"},
+{t:"mc",q:"「9じから5じまで」嘅意思係？",o:["由9點到5點","由5點到9點","9點同5點","9點或5點"],a:0,e:"「から」係起點，「まで」係終點。"},
+{t:"mc",q:"「6じにおきます」嘅「に」表示咩？",o:["場所","時間點","方向","對象"],a:1,e:"具體時間後面加「に」，表示動作發生嘅時間點。"},
+{t:"fill",q:"請填入適當嘅詞彙：まいあさ7じ（　）おきます。",o:["に","で","を","と"],a:0,e:"具體時間後面用「に」。"},
+{t:"fill",q:"請填入適當嘅詞彙：9じ（　）5じまで はたらきます。",o:["まで","から","に","と"],a:1,e:"「から」表示起點。"},
+{t:"fill",q:"請填入適當嘅詞彙：きのうテレビを（　）。（冇睇）",o:["みました","みませんでした","みます","みません"],a:1,e:"過去否定用「ませんでした」。"},
+{t:"trans",q:"「まいあさ6じにおきます」嘅中文意思係？",o:["每天早上6點起床","每天早上6點睡覺","每天晚上6點起床","每天晚上6點睡覺"],a:0,e:"「まいあさ」係每天早上，「おきます」係起床。"},
+{t:"trans",q:"「昨天沒看電視」嘅日文係？",o:["きのうテレビをみました","きのうテレビをみませんでした","きょうテレビをみませんでした","あしたテレビをみません"],a:1,e:"「きのう」係昨天，過去否定用「ませんでした」。"},
+{t:"reorder",q:"請選出正確嘅排列：①から ②9じ ③まで ④5じ",o:["②①④③","①④②③","②③④①","④③②①"],a:0,e:"正確係「9じから5じまで」，即②①④③。"},
+{t:"match",q:"「おととい」嘅意思係？",o:["昨天","前天","後天","明天"],a:1,e:"「おととい」漢字係「一昨日」，即前天。"},
+{t:"fix",q:"以下邊句有錯？",o:["まいあさ6じにおきます","きのうべんきょうしました","きのうにべんきょうしました","9じから5じまではたらきます"],a:2,e:"「きのう」係相對時間，後面唔加「に」。"},
+{t:"qa",q:"「いまなんじですか」嘅正確回答係？",o:["3じです","3がつです","3にちです","3ねんです"],a:0,e:"問時間要回答「～じ」。"},
+{t:"conv",q:"A：まいあさなんじにおきますか。B：＿＿＿＿。",o:["6じにおきます","6がつです","6にちです","はい、そうです"],a:0,e:"問幾點起床，回答「6じにおきます」。"},
+{t:"tf",q:"「ごぜん」係下午。",o:["○","×"],a:1,e:"錯。「ごぜん」係上午，下午係「ごご」。"},
+{t:"tf",q:"「きのう」後面可以加「に」。",o:["○","×"],a:1,e:"錯。相對時間後面唔加「に」。"},
+{t:"tf",q:"「1かい」讀做「いっかい」。",o:["○","×"],a:0,e:"對。1樓係「いっかい」，有促音。"},
+{t:"combo",q:"「げつようび」同「かようび」嘅正確配對係？",o:["星期一／星期二","星期二／星期三","星期三／星期四","星期四／星期五"],a:0,e:"「げつようび」係星期一，「かようび」係星期二。"},
+{t:"combo",q:"「まいあさ」同「まいばん」嘅正確配對係？",o:["每天早上／每天晚上","每天晚上／每天早上","每天／每天","早上／晚上"],a:0,e:"「まいあさ」係每天早上，「まいばん」係每天晚上。"},
+{t:"apply",q:"朋友話佢每日早上5點起床，你應該點回應？",o:["そうですか","たいへんですね","いいですね","わかりました"],a:1,e:"聽到對方好辛苦，用「たいへんですね」表示同情。"},
+{t:"apply",q:"你想問「現在幾點」，應該點講？",o:["いまなんじですか","いまなんにちですか","いまどこですか","いまだれですか"],a:0,e:"問時間用「なんじ」。"},
+{t:"apply",q:"你想講「我從9點工作到5點」，應該點講？",o:["9じから5じまではたらきます","9じまで5じからはたらきます","9じに5じはたらきます","9じと5じはたらきます"],a:0,e:"「から～まで」表示從～到～。"}
+]
+},
+5:{
+title:"第5課：いきます・きます（移動動詞）",
+tutorial:[
+{c:"歡迎嚟到第五課。今課我哋會學移動動詞同埋交通方式。",j:""},
+{c:"「いきます」讀做 ikimasu，意思係去。例如「がっこうへ いきます」。",j:"いきます"},
+{c:"「きます」讀做 kimasu，意思係嚟。例如「にほんへ きました」。",j:"きます"},
+{c:"「かえります」讀做 kaerimasu，意思係返去。例如「うちへ かえります」。",j:"かえります"},
+{c:"「がっこう」係學校，「えき」係車站，「スーパー」係超市。",j:"がっこう、えき、スーパー"},
+{c:"交通工具方面，「でんしゃ」係電車，「ちかてつ」係地鐵，「しんかんせん」係新幹線。",j:"でんしゃ、ちかてつ、しんかんせん"},
+{c:"「バス」係巴士，「タクシー」係的士，「じてんしゃ」係單車。「あるいて」係走路。",j:"バス、タクシー、じてんしゃ、あるいて"},
+{c:"「ひこうき」係飛機，「ふね」係船。",j:"ひこうき、ふね"},
+{c:"「ひと」係人，「ともだち」係朋友，「かぞく」係家人，「ひとりで」係一個人。",j:"ひと、ともだち、かぞく、ひとりで"},
+{c:"「かれ」係他，「かのじょ」係她。",j:"かれ、かのじょ"},
+{c:"時間方面，「せんしゅう」係上週，「こんしゅう」係這週，「らいしゅう」係下週。",j:"せんしゅう、こんしゅう、らいしゅう"},
+{c:"「せんげつ」係上個月，「こんげつ」係這個月，「らいげつ」係下個月。",j:"せんげつ、こんげつ、らいげつ"},
+{c:"「きょねん」係去年，「ことし」係今年，「らいねん」係明年。",j:"きょねん、ことし、らいねん"},
+{c:"日期方面，1號係「ついたち」，2號係「ふつか」，3號係「みっか」，要特別記。",j:"ついたち、ふつか、みっか"},
+{c:"10號係「とおか」，14號係「じゅうよっか」，20號係「はつか」，24號係「にじゅうよっか」。",j:"とおか、じゅうよっか、はつか、にじゅうよっか"},
+{c:"「なんがつ」係幾月，「なんにち」係幾號，「いつ」係什麼時候。",j:"なんがつ、なんにち、いつ"},
+{c:"「たんじょうび」係生日。",j:"たんじょうび"},
+{c:"車站方面，「なんばんせん」係幾號月台，「つぎの」係下一班。",j:"なんばんせん、つぎの"},
+{c:"「ふつう」係普通車，「きゅうこう」係急行，「とっきゅう」係特急。",j:"ふつう、きゅうこう、とっきゅう"},
+{c:"跟住講文法。「へ」表示方向，例如「がっこうへ いきます」即係去學校。",j:"がっこうへ いきます"},
+{c:"「で」表示交通工具，例如「でんしゃで いきます」即係搭電車去。",j:"でんしゃで いきます"},
+{c:"「と」表示同行者，例如「かぞくと にほんへ きました」即係同家人嚟咗日本。",j:"かぞくと にほんへ きました"},
+{c:"問「點去」用「なんで」，例如「なんで とうきょうへ いきますか」。",j:"なんで とうきょうへ いきますか"},
+{c:"問「同邊個去」用「だれと」，例如「だれと とうきょうへ いきますか」。",j:"だれと とうきょうへ いきますか"},
+{c:"問「幾時」用「いつ」，注意「いつ」後面唔加「に」。",j:"いつ"},
+{c:"全面否定用「どこへも いきませんでした」，即係「邊度都冇去」。",j:"どこへも いきませんでした"},
+{c:"「どういたしまして」係「不客氣」。",j:"どういたしまして"}
+],
+vocab:[
+{jp:"いきます",ro:"ikimasu",cn:"去"},{jp:"きます",ro:"kimasu",cn:"來"},
+{jp:"かえります",ro:"kaerimasu",cn:"回去"},{jp:"がっこう",ro:"gakkou",cn:"學校"},
+{jp:"スーパー",ro:"suupaa",cn:"超市"},{jp:"えき",ro:"eki",cn:"車站"},
+{jp:"ひこうき",ro:"hikouki",cn:"飛機"},{jp:"ふね",ro:"fune",cn:"船"},
+{jp:"でんしゃ",ro:"densha",cn:"電車"},{jp:"ちかてつ",ro:"chikatetsu",cn:"地鐵"},
+{jp:"しんかんせん",ro:"shinkansen",cn:"新幹線"},{jp:"バス",ro:"basu",cn:"巴士"},
+{jp:"タクシー",ro:"takushii",cn:"計程車"},{jp:"じてんしゃ",ro:"jitensha",cn:"自行車"},
+{jp:"あるいて",ro:"aruite",cn:"走路"},{jp:"ひと",ro:"hito",cn:"人"},
+{jp:"ともだち",ro:"tomodachi",cn:"朋友"},{jp:"かれ",ro:"kare",cn:"他"},
+{jp:"かのじょ",ro:"kanojo",cn:"她"},{jp:"かぞく",ro:"kazoku",cn:"家人"},
+{jp:"ひとりで",ro:"hitoride",cn:"一個人"},{jp:"せんしゅう",ro:"senshuu",cn:"上週"},
+{jp:"こんしゅう",ro:"konshuu",cn:"這週"},{jp:"らいしゅう",ro:"raishuu",cn:"下週"},
+{jp:"せんげつ",ro:"sengetsu",cn:"上個月"},{jp:"こんげつ",ro:"kongetsu",cn:"這個月"},
+{jp:"らいげつ",ro:"raigetsu",cn:"下個月"},{jp:"きょねん",ro:"kyonen",cn:"去年"},
+{jp:"ことし",ro:"kotoshi",cn:"今年"},{jp:"らいねん",ro:"rainen",cn:"明年"},
+{jp:"なんねん",ro:"nannen",cn:"幾年"},{jp:"なんがつ",ro:"nangatsu",cn:"幾月"},
+{jp:"ついたち",ro:"tsuitachi",cn:"1日"},{jp:"ふつか",ro:"futsuka",cn:"2日"},
+{jp:"みっか",ro:"mikka",cn:"3日"},{jp:"とおか",ro:"tooka",cn:"10日"},
+{jp:"はつか",ro:"hatsuka",cn:"20日"},{jp:"なんにち",ro:"nannichi",cn:"幾日"},
+{jp:"いつ",ro:"itsu",cn:"什麼時候"},{jp:"たんじょうび",ro:"tanjoubi",cn:"生日"},
+{jp:"ばんせん",ro:"bansen",cn:"～號月台"},{jp:"つぎの",ro:"tsugino",cn:"下一個的"},
+{jp:"ふつう",ro:"futsuu",cn:"普通車"},{jp:"きゅうこう",ro:"kyuukou",cn:"急行"},
+{jp:"とっきゅう",ro:"tokkyuu",cn:"特急"},{jp:"どういたしまして",ro:"dou itashimashite",cn:"不客氣"}
+],
+grammar:[
+{p:"～へいきます／きます／かえります",m:"去／嚟／返去～（方向）",e:"わたしはがっこうへいきます。<br><span class='ro'>watashi wa gakkou e ikimasu.</span><br>我去學校。"},
+{p:"～でいきます（交通工具）",m:"搭～去",e:"でんしゃでえきへいきます。<br><span class='ro'>densha de eki e ikimasu.</span><br>搭電車去車站。"},
+{p:"～といきます（同行者）",m:"同～一齊去",e:"かぞくとにほんへきました。<br><span class='ro'>kazoku to nihon e kimashita.</span><br>和家人來日本。"},
+{p:"なんでいきますか",m:"點去？（詢問方法）",e:"なんでとうきょうへいきますか。<br><span class='ro'>nande toukyou e ikimasuka.</span><br>怎麼去東京？"},
+{p:"だれといきますか",m:"同邊個去？",e:"だれととうきょうへいきますか。<br><span class='ro'>dare to toukyou e ikimasuka.</span><br>和誰去東京？"},
+{p:"どこへもいきませんでした",m:"邊度都冇去（全面否定）",e:"にちようびどこへもいきませんでした。<br><span class='ro'>nichiyoubi doko e mo ikimasen deshita.</span><br>星期天哪裡都沒去。"},
+{p:"いつ～か",m:"幾時～？（詢問時間，不加に）",e:"いつにほんへきましたか。<br><span class='ro'>itsu nihon e kimashitaka.</span><br>什麼時候來日本的？"}
+],
+quiz:[
+{t:"mc",q:"「いきます」嘅意思係？",o:["去","嚟","返去","走"],a:0,e:"「いきます」漢字係「行きます」，意思係去。"},
+{t:"mc",q:"「きます」嘅意思係？",o:["去","嚟","返去","走"],a:1,e:"「きます」漢字係「来ます」，意思係嚟。"},
+{t:"mc",q:"「かえります」嘅意思係？",o:["去","嚟","返去","走"],a:2,e:"「かえります」漢字係「帰ります」，意思係返去。"},
+{t:"mc",q:"「でんしゃ」嘅意思係？",o:["巴士","地鐵","電車","新幹線"],a:2,e:"「でんしゃ」漢字係「電車」。"},
+{t:"mc",q:"「ちかてつ」嘅意思係？",o:["巴士","地鐵","電車","新幹線"],a:1,e:"「ちかてつ」漢字係「地下鉄」，即地鐵。"},
+{t:"mc",q:"「しんかんせん」嘅意思係？",o:["巴士","地鐵","電車","新幹線"],a:3,e:"「しんかんせん」漢字係「新幹線」。"},
+{t:"mc",q:"「タクシー」嘅意思係？",o:["巴士","的士","單車","飛機"],a:1,e:"「タクシー」嚟自英文 taxi，即的士。"},
+{t:"mc",q:"「あるいて」嘅意思係？",o:["跑步","走路","搭車","游水"],a:1,e:"「あるいて」係「走路」嘅て形。"},
+{t:"mc",q:"「ひとりで」嘅意思係？",o:["和家人","和朋友","一個人","兩個人"],a:2,e:"「ひとりで」即係「一個人」。"},
+{t:"mc",q:"「へ」喺「がっこうへいきます」入面表示咩？",o:["交通工具","方向","同行者","時間"],a:1,e:"「へ」係方向助詞，表示移動嘅目的地。"},
+{t:"mc",q:"「で」喺「でんしゃでいきます」入面表示咩？",o:["交通工具","方向","同行者","時間"],a:0,e:"「で」表示手段、方法，此處係交通工具。"},
+{t:"mc",q:"「と」喺「かぞくとにほんへきました」入面表示咩？",o:["交通工具","方向","同行者","時間"],a:2,e:"「と」表示共同進行動作嘅對象，即同行者。"},
+{t:"mc",q:"「なんで」用嚟問咩？",o:["同邊個","幾時","點去（方法）","去邊度"],a:2,e:"「なんで」詢問方法、手段，回答用「～で」。"},
+{t:"mc",q:"「だれと」用嚟問咩？",o:["同邊個","幾時","點去","去邊度"],a:0,e:"「だれと」詢問同行者。"},
+{t:"mc",q:"「いつ」後面應該加咩？",o:["に","で","を","咩都唔加"],a:3,e:"「いつ」後面唔加「に」，呢個係重要規則。"},
+{t:"fill",q:"請填入適當嘅助詞：でんしゃ（　）えきへいきます。",o:["へ","で","と","に"],a:1,e:"交通工具用「で」。"},
+{t:"fill",q:"請填入適當嘅助詞：かぞく（　）にほんへきました。",o:["へ","で","と","に"],a:2,e:"同行者用「と」。"},
+{t:"fill",q:"請填入適當嘅詞彙：にちようび（　）へもいきませんでした。",o:["どこ","なに","だれ","いつ"],a:0,e:"「どこへも＋否定」表示邊度都冇去。"},
+{t:"trans",q:"「わたしはタクシーでうちへかえります」嘅中文意思係？",o:["我搭的士回家","我搭巴士回家","我走路回家","我搭電車回家"],a:0,e:"「タクシーで」係搭的士，「かえります」係返去。"},
+{t:"trans",q:"「和家人來日本」嘅日文係？",o:["かぞくとにほんへきました","かぞくににほんへきました","かぞくでにほんへきました","かぞくをにほんへきました"],a:0,e:"同行者用「と」。"},
+{t:"reorder",q:"請選出正確嘅排列：①へ ②でんしゃ ③いきます ④で ⑤えき",o:["②④⑤①③","④②①⑤③","⑤①③②④","②①④⑤③"],a:0,e:"正確係「でんしゃでえきへいきます」，即②④⑤①③。"},
+{t:"match",q:"「ついたち」係幾號？",o:["1號","2號","3號","10號"],a:0,e:"「ついたち」係1號，特殊讀法。"},
+{t:"fix",q:"以下邊句有錯？",o:["がっこうへいきます","でんしゃでいきます","かぞくとにほんへきました","いつににほんへきましたか"],a:3,e:"「いつ」後面唔加「に」。"},
+{t:"qa",q:"「たんじょうびはいつですか」嘅正確回答係？",o:["6がつ13にちです","6じ13ふんです","6がつ13じです","6ねんです"],a:0,e:"生日日期用「～がつ～にち」。"},
+{t:"conv",q:"A：なんでとうきょうへいきますか。B：＿＿＿＿。",o:["しんかんせんでいきます","やまださんといきます","3がつにいきます","とうきょうです"],a:0,e:"問方法要回答交通工具。"},
+{t:"tf",q:"「へ」嘅發音係 e。",o:["○","×"],a:0,e:"對。作為助詞時讀 e。"},
+{t:"tf",q:"「あるいて」後面要加「で」。",o:["○","×"],a:1,e:"錯。「あるいて」直接接動詞，唔加「で」。"},
+{t:"tf",q:"「はつか」係20號。",o:["○","×"],a:0,e:"對。「はつか」係20號。"},
+{t:"combo",q:"「せんしゅう」同「らいしゅう」嘅正確配對係？",o:["上週／下週","下週／上週","這週／下週","上週／這週"],a:0,e:"「せんしゅう」係上週，「らいしゅう」係下週。"},
+{t:"combo",q:"「でんしゃ」同「ちかてつ」嘅正確配對係？",o:["電車／地鐵","地鐵／電車","巴士／電車","電車／巴士"],a:0,e:"「でんしゃ」係電車，「ちかてつ」係地鐵。"},
+{t:"apply",q:"你想問「聽日去邊度」，應該點講？",o:["あしたどこへいきますか","あしたなんでいきますか","あしただれといきますか","あしいついきますか"],a:0,e:"問去邊度用「どこへいきますか」。"},
+{t:"apply",q:"你生日係6月13日，應該點講？",o:["たんじょうびは6がつ13にちです","たんじょうびは6じ13ふんです","たんじょうびは6がつ13じです","たんじょうびはろくがつじゅうさんにちです"],a:0,e:"生日日期用「～がつ～にち」表達。"},
+{t:"apply",q:"你想講「我同家人一齊去日本」，應該點講？",o:["わたしはかぞくとにほんへいきます","わたしはかぞくににほんへいきます","わたしはかぞくでにほんへいきます","わたしはかぞくをにほんへいきます"],a:0,e:"同行者用「と」。"}
+]
+},
+6:{
+title:"第6課：たべます・のみます（日常動作）",
+tutorial:[
+{c:"歡迎嚟到第六課。今課我哋會學日常動作動詞同埋邀約句型。",j:""},
+{c:"「たべます」讀做 tabemasu，意思係食。用於吃食物。例如「パンを たべます」。",j:"たべます"},
+{c:"「のみます」讀做 nomimasu，意思係飲。用於喝飲料，也可以指吃藥。例如「おちゃを のみます」。",j:"のみます"},
+{c:"「すいます」讀做 suimasu，意思係抽煙，通常講「たばこを すいます」。",j:"たばこを すいます"},
+{c:"「みます」讀做 mimasu，意思係看。看電視、看電影都用得。例如「テレビを みます」。",j:"みます"},
+{c:"「ききます」讀做 kikimasu，意思係聽，也可以表示「問」。例如「おんがくを ききます」。",j:"ききます"},
+{c:"「よみます」讀做 yomimasu，意思係讀。例如「ほんを よみます」。",j:"よみます"},
+{c:"「かきます」讀做 kakimasu，意思係寫。例如「てがみを かきます」。",j:"かきます"},
+{c:"「かいます」讀做 kaimasu，意思係買。例如「かばんを かいます」。",j:"かいます"},
+{c:"「とります」讀做 torimasu，意思係拍（照），通常講「しゃしんを とります」。",j:"しゃしんを とります"},
+{c:"「します」讀做 shimasu，意思係做，係萬用動詞。例如「テニスを します」。",j:"します"},
+{c:"「あいます」讀做 aimasu，意思係見面。要留意，見面嘅對象用助詞「に」，例如「ともだちに あいます」。",j:"ともだちに あいます"},
+{c:"餐食方面，「ごはん」係飯或者一餐，「あさごはん」係早餐，「ひるごはん」係午餐，「ばんごはん」係晚餐。",j:"ごはん、あさごはん、ひるごはん、ばんごはん"},
+{c:"食物方面，「パン」係麵包，「たまご」係蛋，「にく」係肉，「さかな」係魚。",j:"パン、たまご、にく、さかな"},
+{c:"「やさい」係蔬菜，「くだもの」係水果，「みず」係水。",j:"やさい、くだもの、みず"},
+{c:"飲品方面，「おちゃ」係茶，「こうちゃ」係紅茶，「ぎゅうにゅう」係牛奶。",j:"おちゃ、こうちゃ、ぎゅうにゅう"},
+{c:"「ジュース」係果汁，「ビール」係啤酒，「おさけ」係酒。",j:"ジュース、ビール、おさけ"},
+{c:"物品方面，「たばこ」係香菸，「てがみ」係信，「レポート」係報告，「しゃしん」係照片。",j:"たばこ、てがみ、レポート、しゃしん"},
+{c:"「みせ」係店，「にわ」係庭院，「しゅくだい」係作業。",j:"みせ、にわ、しゅくだい"},
+{c:"活動方面，「テニス」係網球，「サッカー」係足球，「おはなみ」係賞花。",j:"テニス、サッカー、おはなみ"},
+{c:"副詞方面，「いっしょに」係一起，「ちょっと」係一點點，「いつも」係總是，「ときどき」係有時。",j:"いっしょに、ちょっと、いつも、ときどき"},
+{c:"「それから」係然後或者還有。",j:"それから"},
+{c:"常用表達方面，「ええ」係「嗯」，「いいですね」係「好啊」，「わかりました」係「我知道了」，「じゃ、また」係「再見」。",j:"ええ、いいですね、わかりました、じゃ、また"},
+{c:"跟住講文法。「を」表示動作對象，例如「パンを たべます」即係食麵包。",j:"パンを たべます"},
+{c:"「で」表示動作場所，例如「えきで しんぶんを かいます」即係喺車站買報紙。",j:"えきで しんぶんを かいます"},
+{c:"「ませんか」用嚟邀請對方，例如「いっしょに いきませんか」即係「要唔要一齊去？」。",j:"いっしょに いきませんか"},
+{c:"「ましょう」用嚟提議，例如「ちょっと やすみましょう」即係「稍微休息下啦」。",j:"ちょっと やすみましょう"},
+{c:"「なにも～ません」表示全面否定，例如「なにも たべませんでした」即係「咩都冇食」。",j:"なにも たべませんでした"},
+{c:"「どこで」用嚟問動作場所，例如「どこで そのかばんを かいましたか」。",j:"どこで そのかばんを かいましたか"},
+{c:"「それから」用嚟連接動作，表示「然後」。",j:"それから"},
+{c:"「にあいます」表示見面，對象用「に」，例如「ともだちに あいます」。",j:"ともだちに あいます"},
+{c:"邀約會話嘅流程係：先邀約「～ませんか」，對方接受講「いいですね」，然後確認「どこへ」「なんじに」，再約定「～で あいましょう」，最後道別「じゃ、また」。",j:""}
+],
+vocab:[
+{jp:"たべます",ro:"tabemasu",cn:"吃"},{jp:"のみます",ro:"nomimasu",cn:"喝"},
+{jp:"すいます",ro:"suimasu",cn:"抽（菸）"},{jp:"みます",ro:"mimasu",cn:"看"},
+{jp:"ききます",ro:"kikimasu",cn:"聽／問"},{jp:"よみます",ro:"yomimasu",cn:"讀"},
+{jp:"かきます",ro:"kakimasu",cn:"寫"},{jp:"かいます",ro:"kaimasu",cn:"買"},
+{jp:"とります",ro:"torimasu",cn:"拍（照）"},{jp:"します",ro:"shimasu",cn:"做"},
+{jp:"あいます",ro:"aimasu",cn:"見面"},{jp:"ごはん",ro:"gohan",cn:"飯／餐"},
+{jp:"あさごはん",ro:"asagohan",cn:"早餐"},{jp:"ひるごはん",ro:"hirugohan",cn:"午餐"},
+{jp:"ばんごはん",ro:"bangohan",cn:"晚餐"},{jp:"パン",ro:"pan",cn:"麵包"},
+{jp:"たまご",ro:"tamago",cn:"蛋"},{jp:"にく",ro:"niku",cn:"肉"},
+{jp:"さかな",ro:"sakana",cn:"魚"},{jp:"やさい",ro:"yasai",cn:"蔬菜"},
+{jp:"くだもの",ro:"kudamono",cn:"水果"},{jp:"みず",ro:"mizu",cn:"水"},
+{jp:"おちゃ",ro:"ocha",cn:"茶"},{jp:"こうちゃ",ro:"koucha",cn:"紅茶"},
+{jp:"ぎゅうにゅう",ro:"gyuunyuu",cn:"牛奶"},{jp:"ジュース",ro:"juusu",cn:"果汁"},
+{jp:"ビール",ro:"biiru",cn:"啤酒"},{jp:"おさけ",ro:"osake",cn:"酒"},
+{jp:"たばこ",ro:"tabako",cn:"香菸"},{jp:"てがみ",ro:"tegami",cn:"信"},
+{jp:"レポート",ro:"repooto",cn:"報告"},{jp:"しゃしん",ro:"shashin",cn:"照片"},
+{jp:"みせ",ro:"mise",cn:"店"},{jp:"にわ",ro:"niwa",cn:"庭院"},
+{jp:"しゅくだい",ro:"shukudai",cn:"作業"},{jp:"テニス",ro:"tenisu",cn:"網球"},
+{jp:"サッカー",ro:"sakkaa",cn:"足球"},{jp:"おはなみ",ro:"ohanami",cn:"賞花"},
+{jp:"なに",ro:"nani",cn:"什麼"},{jp:"いっしょに",ro:"issho ni",cn:"一起"},
+{jp:"ちょっと",ro:"chotto",cn:"一點點／稍微"},{jp:"いつも",ro:"itsumo",cn:"總是"},
+{jp:"ときどき",ro:"tokidoki",cn:"有時"},{jp:"それから",ro:"sorekara",cn:"然後／還有"},
+{jp:"いいですね",ro:"ii desune",cn:"好啊"},{jp:"わかりました",ro:"wakarimashita",cn:"我知道了"},
+{jp:"じゃ、また",ro:"ja, mata",cn:"那麼，再見"}
+],
+grammar:[
+{p:"～を（動作對象）",m:"做～（標示賓語）",e:"わたしはほんをよみます。<br><span class='ro'>watashi wa hon o yomimasu.</span><br>我讀書。"},
+{p:"～で（動作場所）",m:"喺～做某事",e:"えきでしんぶんをかいます。<br><span class='ro'>eki de shinbun o kaimasu.</span><br>在車站買報紙。"},
+{p:"～ませんか（邀請）",m:"要唔要一齊～？",e:"いっしょにこうべへいきませんか。<br><span class='ro'>issho ni koube e ikimasenka.</span><br>要不要一起去神戶？"},
+{p:"～ましょう（提議）",m:"一齊～吧",e:"ちょっとやすみましょう。<br><span class='ro'>chotto yasumimashou.</span><br>稍微休息一下吧。"},
+{p:"なにを～か",m:"做咩？",e:"まいあさなにをたべますか。<br><span class='ro'>maiasa nani o tabemasuka.</span><br>每天早上吃什麼？"},
+{p:"なにも～ません",m:"咩都冇～（全面否定）",e:"けさなにもたべませんでした。<br><span class='ro'>kesa nani mo tabemasen deshita.</span><br>今天早上什麼都沒吃。"},
+{p:"どこで～か",m:"喺邊度做～？",e:"どこでそのかばんをかいましたか。<br><span class='ro'>doko de sono kaban o kaimashitaka.</span><br>在哪裡買那個包包？"},
+{p:"それから",m:"然後／還有",e:"べんきょうしました。それからえいがをみました。<br><span class='ro'>benkyoushimashita. sorekara eiga o mimashita.</span><br>學習了。然後看了電影。"},
+{p:"～にあいます",m:"同～見面（對象用に）",e:"ともだちにあいます。<br><span class='ro'>tomodachi ni aimasu.</span><br>和朋友見面。"}
+],
+quiz:[
+{t:"mc",q:"「たべます」嘅意思係？",o:["飲","食","睇","買"],a:1,e:"「たべます」漢字係「食べます」，意思係食。"},
+{t:"mc",q:"「のみます」嘅意思係？",o:["飲","食","睇","買"],a:0,e:"「のみます」漢字係「飲みます」，意思係飲。"},
+{t:"mc",q:"「みます」嘅意思係？",o:["聽","睇","讀","寫"],a:1,e:"「みます」漢字係「見ます」，意思係睇。"},
+{t:"mc",q:"「ききます」嘅意思係？",o:["聽","睇","讀","寫"],a:0,e:"「ききます」漢字係「聞きます」，意思係聽。"},
+{t:"mc",q:"「よみます」嘅意思係？",o:["聽","睇","讀","寫"],a:2,e:"「よみます」漢字係「読みます」，意思係讀。"},
+{t:"mc",q:"「かきます」嘅意思係？",o:["聽","睇","讀","寫"],a:3,e:"「かきます」漢字係「書きます」，意思係寫。"},
+{t:"mc",q:"「かいます」嘅意思係？",o:["買","賣","食","飲"],a:0,e:"「かいます」漢字係「買います」，意思係買。"},
+{t:"mc",q:"「とります」搭配咩名詞用？",o:["ごはん","しゃしん","てがみ","ほん"],a:1,e:"「とります」通常搭配「しゃしんを」使用，即影相。"},
+{t:"mc",q:"「あいます」嘅對象用咩助詞？",o:["を","で","に","へ"],a:2,e:"「あいます」嘅對象用「に」，例如「ともだちにあいます」。"},
+{t:"mc",q:"「ごはん」嘅意思係？",o:["水","飯／餐","茶","肉"],a:1,e:"「ごはん」漢字係「ご飯」，即飯或者一餐。"},
+{t:"mc",q:"「たまご」嘅意思係？",o:["蛋","肉","魚","蔬菜"],a:0,e:"「たまご」漢字係「卵」，意思係蛋。"},
+{t:"mc",q:"「やさい」嘅意思係？",o:["水果","蔬菜","肉","魚"],a:1,e:"「やさい」漢字係「野菜」，意思係蔬菜。"},
+{t:"mc",q:"「おちゃ」嘅意思係？",o:["水","茶","牛奶","果汁"],a:1,e:"「おちゃ」漢字係「お茶」，即茶。"},
+{t:"mc",q:"「いっしょにいきませんか」係咩句型？",o:["命令","邀請","拒絕","道歉"],a:1,e:"「～ませんか」係委婉嘅邀請句型。"},
+{t:"mc",q:"「なにもたべませんでした」嘅意思係？",o:["食咗好多","咩都冇食","食咗少少","想食嘢"],a:1,e:"「なにも＋否定」表示全面否定，即「咩都冇食」。"},
+{t:"fill",q:"請填入適當嘅助詞：わたしはパン（　）たべます。",o:["を","で","に","へ"],a:0,e:"動作對象用「を」。"},
+{t:"fill",q:"請填入適當嘅助詞：えき（　）しんぶんをかいます。",o:["を","で","に","へ"],a:1,e:"動作場所用「で」。"},
+{t:"fill",q:"請填入適當嘅助詞：ともだち（　）あいます。",o:["を","で","に","へ"],a:2,e:"「あいます」嘅對象用「に」。"},
+{t:"trans",q:"「わたしはえきでしんぶんをかいます」嘅中文意思係？",o:["我在車站買報紙","我在車站看報紙","我在學校買報紙","我在車站賣報紙"],a:0,e:"「えきで」係在車站，「かいます」係買。"},
+{t:"trans",q:"「要不要一起打網球？」嘅日文係？",o:["いっしょにテニスをしませんか","いっしょにテニスをしますか","いっしょにテニスをしましょうか","テニスをしませんか"],a:0,e:"「いっしょに」係一起，「～ませんか」係邀請。"},
+{t:"reorder",q:"請選出正確嘅排列：①を ②わたし ③パン ④は ⑤たべます",o:["②④③①⑤","③①⑤②④","②③④①⑤","④②③①⑤"],a:0,e:"正確係「わたしはパンをたべます」，即②④③①⑤。"},
+{t:"match",q:"「それから」嘅意思係？",o:["但是","然後","因為","所以"],a:1,e:"「それから」表示「然後」或者「仲有」。"},
+{t:"fix",q:"以下邊句有錯？",o:["わたしはパンをたべます","えきでしんぶんをかいます","ともだちとあいます","けさなにもたべませんでした"],a:2,e:"「あいます」嘅對象標準用「に」，應改為「ともだちにあいます」。"},
+{t:"qa",q:"「けさなにをたべましたか」嘅正確回答係？",o:["パンをたべました","えきでかいました","ともだちにあいました","テニスをします"],a:0,e:"問食咗咩，要回答食物。"},
+{t:"conv",q:"A：あしたテニスをしませんか。B：＿＿＿＿。",o:["いいえ、ちがいます","ええ、いいですね","すみません、ちょっと","そうですか"],a:1,e:"接受邀請用「ええ、いいですね」。"},
+{t:"tf",q:"「を」表示動作對象。",o:["○","×"],a:0,e:"對。「を」標示動作嘅直接對象。"},
+{t:"tf",q:"「で」只能表示交通工具。",o:["○","×"],a:1,e:"錯。「で」仲可以表示動作場所。"},
+{t:"tf",q:"「あいます」嘅對象用「と」。",o:["○","×"],a:1,e:"錯。標準用法係「に」。"},
+{t:"combo",q:"「たべます」同「のみます」嘅正確配對係？",o:["食／飲","飲／食","食／買","買／食"],a:0,e:"「たべます」係食，「のみます」係飲。"},
+{t:"combo",q:"「おちゃ」同「みず」嘅正確配對係？",o:["水／茶","茶／水","茶／果汁","果汁／茶"],a:1,e:"「おちゃ」係茶，「みず」係水。"},
+{t:"apply",q:"朋友問你「あしたテニスをしませんか」，你想接受，應該點答？",o:["いいえ、ちがいます","ええ、いいですね","すみません、ちょっと","そうですか"],a:1,e:"接受邀請用「ええ、いいですね」。"},
+{t:"apply",q:"你想問「你喺邊度買嗰個包包」，應該點講？",o:["どこでそのかばんをかいましたか","なにでそのかばんをかいましたか","だれとそのかばんをかいましたか","いつそのかばんをかいましたか"],a:0,e:"問場所用「どこで」。"},
+{t:"apply",q:"你想講「我每天早上食麵包同蛋」，應該點講？",o:["まいあさパンとたまごをたべます","まいあさパンとたまごをのみます","まいばんパンとたまごをたべます","まいあさパンとたまごをかいます"],a:0,e:"「まいあさ」係每天早上，「たべます」係食。"}
+]
+}
 };
 
-const grammarData = {
-  1: [
-    {pattern:"A は B です", meaning:"A是B（肯定句）",
-     example:"わたしは がくせいです。<br><span class='ro'>watashi wa gakusei desu.</span><br>我是學生。"},
-    {pattern:"A は B じゃ／では ありません", meaning:"A不是B（否定句）",
-     example:"わたしは せんせいじゃ ありません。<br><span class='ro'>watashi wa sensei ja arimasen.</span><br>我不是老師。"},
-    {pattern:"A は B ですか", meaning:"A是B嗎？（疑問句）",
-     example:"あなたは がくせいですか。<br><span class='ro'>anata wa gakusei desuka.</span><br>你是學生嗎？"},
-    {pattern:"A の B", meaning:"A的B（所屬）",
-     example:"パワーでんきの しゃいんです。<br><span class='ro'>pawaa denki no shain desu.</span><br>是電力公司的職員。"},
-    {pattern:"～から きました", meaning:"從～來的",
-     example:"アメリカから きました。<br><span class='ro'>amerika kara kimashita.</span><br>從美國來的。"}
-  ],
-  2: [
-    {pattern:"これ／それ／あれ は ～です", meaning:"這個／那個／那個（遠處）是～",
-     example:"これは ほんです。<br><span class='ro'>kore wa hon desu.</span><br>這是書。"},
-    {pattern:"この／その／あの ～", meaning:"這個～／那個～（後接名詞）",
-     example:"このほんは わたしのです。<br><span class='ro'>kono hon wa watashi no desu.</span><br>這本書是我的。"},
-    {pattern:"～は なんですか", meaning:"～是什麼？",
-     example:"それは なんですか。<br><span class='ro'>sore wa nan desuka.</span><br>那是什麼？"},
-    {pattern:"ちがいます", meaning:"不對（否定對方猜測）",
-     example:"いいえ、ちがいます。<br><span class='ro'>iie, chigaimasu.</span><br>不，不是那樣。"}
-  ],
-  3: [
-    {pattern:"ここ／そこ／あそこ は ～です", meaning:"這裡／那裡／那裡（遠處）是～",
-     example:"ここは きょうしつです。<br><span class='ro'>koko wa kyoushitsu desu.</span><br>這裡是教室。"},
-    {pattern:"～は どこですか", meaning:"～在哪裡？",
-     example:"トイレは どこですか。<br><span class='ro'>toire wa doko desuka.</span><br>廁所在哪裡？"},
-    {pattern:"～を ください", meaning:"請給我～",
-     example:"これを ください。<br><span class='ro'>kore o kudasai.</span><br>請給我這個。"},
-    {pattern:"～を みせて ください", meaning:"請給我看～",
-     example:"そのかばんを みせて ください。<br><span class='ro'>sono kaban o misete kudasai.</span><br>請給我看那個包包。"},
-    {pattern:"～は いくらですか", meaning:"～多少錢？",
-     example:"これは いくらですか。<br><span class='ro'>kore wa ikura desuka.</span><br>這個多少錢？"}
-  ],
-  4: [
-    {pattern:"動詞ます形（現在肯定）", meaning:"做～",
-     example:"まいあさ 6じに おきます。<br><span class='ro'>maiasa rokuji ni okimasu.</span><br>每天早上6點起床。"},
-    {pattern:"動詞ません（現在否定）", meaning:"不做～",
-     example:"きょうは はたらきません。<br><span class='ro'>kyou wa hatarakimasen.</span><br>今天不工作。"},
-    {pattern:"動詞ました（過去肯定）", meaning:"做了～",
-     example:"きのう べんきょうしました。<br><span class='ro'>kinou benkyoushimashita.</span><br>昨天學習了。"},
-    {pattern:"動詞ませんでした（過去否定）", meaning:"沒有做～",
-     example:"きのう テレビを みませんでした。<br><span class='ro'>kinou terebi o mimasen deshita.</span><br>昨天沒看電視。"},
-    {pattern:"～から ～まで", meaning:"從～到～",
-     example:"9じから 5じまで はたらきます。<br><span class='ro'>kuji kara goji made hatarakimasu.</span><br>從9點工作到5點。"},
-    {pattern:"～に（時間點）", meaning:"在～（具體時間）",
-     example:"3がつ25にちに にほんへ きました。<br><span class='ro'>sangatsu nijuugonichi ni nihon e kimashita.</span><br>3月25日來日本的。"}
-  ],
-  5: [
-    {pattern:"～へ いきます／きます／かえります", meaning:"去／來／回去～（方向）",
-     example:"わたしは がっこうへ いきます。<br><span class='ro'>watashi wa gakkou e ikimasu.</span><br>我去學校。"},
-    {pattern:"～で いきます（交通工具）", meaning:"搭～去",
-     example:"でんしゃで えきへ いきます。<br><span class='ro'>densha de eki e ikimasu.</span><br>搭電車去車站。"},
-    {pattern:"～と いきます（同行者）", meaning:"和～一起去",
-     example:"かぞくと にほんへ きました。<br><span class='ro'>kazoku to nihon e kimashita.</span><br>和家人來日本。"},
-    {pattern:"なんで いきますか", meaning:"怎麼去？（詢問方法）",
-     example:"なんで とうきょうへ いきますか。<br><span class='ro'>nande toukyou e ikimasuka.</span><br>怎麼去東京？"},
-    {pattern:"だれと いきますか", meaning:"和誰去？",
-     example:"だれと とうきょうへ いきますか。<br><span class='ro'>dare to toukyou e ikimasuka.</span><br>和誰去東京？"},
-    {pattern:"どこへも いきませんでした", meaning:"哪裡都沒去（全面否定）",
-     example:"にちようび どこへも いきませんでした。<br><span class='ro'>nichiyoubi doko e mo ikimasen deshita.</span><br>星期天哪裡都沒去。"},
-    {pattern:"いつ ～か", meaning:"什麼時候～？（詢問時間，不加に）",
-     example:"いつ にほんへ きましたか。<br><span class='ro'>itsu nihon e kimashitaka.</span><br>什麼時候來日本的？"}
-  ]
-};
+/* ================= 狀態 ================= */
+let currentLesson=1, currentMode='listen';
+let totalScore=0, streak=0, correctCount=0;
+let listenPlaying=false, listenIndex=0, listenTimer=null;
 
-// ============ 狀態 ============
-let currentLesson = 1;
-let currentMode = 'read';
-let totalScore = 0;
-let streak = 0;
-let speakIndex = 0;
-let quizState = null;
+/* ================= 語音 ================= */
+let voicesReady=false;
+function initVoices(){ if(speechSynthesis.getVoices().length>0) voicesReady=true; }
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=initVoices; initVoices(); }
 
-// ============ 語音合成 ============
-let voicesReady = false;
-function initVoices() {
-  if (speechSynthesis.getVoices().length > 0) voicesReady = true;
+function pickVoice(lang){
+  const vs=speechSynthesis.getVoices();
+  let v=vs.find(x=>x.lang===lang);
+  if(!v) v=vs.find(x=>x.lang.startsWith(lang.split('-')[0]));
+  return v||null;
 }
-if ('speechSynthesis' in window) {
-  speechSynthesis.onvoiceschanged = initVoices;
-  initVoices();
-}
-
-function speak(text) {
-  if (!('speechSynthesis' in window)) {
-    alert('你的瀏覽器不支援語音功能，建議使用 Chrome 或 Edge。');
-    return;
-  }
+function speak(text,lang,onEnd){
+  if(!('speechSynthesis' in window)){ if(onEnd)onEnd(); return; }
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ja-JP';
-  u.rate = 0.75;
-  u.pitch = 1;
-  const voices = speechSynthesis.getVoices();
-  const jaVoice = voices.find(v => v.lang === 'ja-JP') || voices.find(v => v.lang.startsWith('ja'));
-  if (jaVoice) u.voice = jaVoice;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=lang; u.rate=lang==='zh-HK'?1.0:0.8; u.pitch=1;
+  const v=pickVoice(lang); if(v)u.voice=v;
+  if(onEnd)u.onend=onEnd;
   speechSynthesis.speak(u);
 }
+let audioCtx=null;
+function beep(type){
+  try{
+    if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    if(type==='correct'){o.frequency.value=880;g.gain.setValueAtTime(.15,audioCtx.currentTime);o.type='sine';}
+    else{o.frequency.value=220;g.gain.setValueAtTime(.15,audioCtx.currentTime);o.type='sawtooth';}
+    o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.25);o.stop(audioCtx.currentTime+.26);
+  }catch(e){}
+}
+function updateScoreBar(){
+  document.getElementById('totalScore').textContent=totalScore;
+  document.getElementById('streak').textContent=streak;
+  document.getElementById('correctCount').textContent=correctCount;
+}
 
-// ============ 工具函數 ============
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+/* ================= 初始化 ================= */
+function initLessonBar(){
+  const bar=document.getElementById('lessonBar');
+  for(let i=1;i<=6;i++){
+    const b=document.createElement('button');
+    b.className='lesson-btn'+(i===1?' active':'');
+    b.textContent='第'+i+'課';
+    b.onclick=()=>{
+      document.querySelectorAll('.lesson-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      currentLesson=i; stopListen(); render();
+    };
+    bar.appendChild(b);
   }
-  return a;
+}
+document.querySelector('.mode-bar').addEventListener('click',e=>{
+  if(!e.target.classList.contains('mode-btn'))return;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentMode=e.target.dataset.mode;
+  stopListen(); render();
+});
+function stopListen(){
+  listenPlaying=false;
+  if(listenTimer){clearTimeout(listenTimer);listenTimer=null;}
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+}
+function render(){
+  const el=document.getElementById('content');
+  if(currentMode==='listen')renderListen(el);
+  else if(currentMode==='read')renderRead(el);
+  else renderQuiz(el);
 }
 
-function updateScoreBar() {
-  document.getElementById('totalScore').textContent = totalScore;
-  document.getElementById('streak').textContent = streak;
+/* ================= 聽教程 ================= */
+function renderListen(el){
+  const lesson=LESSONS[currentLesson];
+  if(listenIndex>=lesson.tutorial.length)listenIndex=0;
+  el.innerHTML=`
+    <div class="listen-box">
+      <div class="section-title">🎧 第${currentLesson}課 廣東話詳細教程</div>
+      <div class="audio-note"><b>💡 使用提示：</b>撳大掣開始播放，導師會用廣東話逐句詳細講解，遇到日文詞彙會自動用日文朗讀。可以閉眼專心聽，也可以點擊任何一句由嗰句開始播。</div>
+      <div class="tut-sentence ${listenPlaying?'active-line':''}" id="tutSentence">${fmtSentence(lesson.tutorial[listenIndex])}</div>
+      <div class="progress-track"><div class="progress-fill" id="tutProgress" style="width:${(listenIndex/lesson.tutorial.length)*100}%"></div></div>
+      <div class="listen-counter" id="tutCounter">第 ${listenIndex+1} / ${lesson.tutorial.length} 句</div>
+      <div><button class="play-btn ${listenPlaying?'playing':''}" id="playBtn" onclick="toggleListen()">${listenPlaying?'⏸':'▶'}</button></div>
+      <div class="ctrl-row">
+        <button class="ctrl-btn" onclick="prevSentence()" ${listenIndex===0?'disabled':''}>← 上一句</button>
+        <button class="ctrl-btn" onclick="nextSentence()" ${listenIndex>=lesson.tutorial.length-1?'disabled':''}>下一句 →</button>
+        <button class="ctrl-btn" onclick="repeatSentence()">🔁 重播</button>
+        <button class="ctrl-btn" onclick="jumpTo(0)">⏮ 從頭</button>
+      </div>
+    </div>`;
+  document.getElementById('tutSentence').onclick=()=>{ if(listenPlaying)stopListen(); jumpTo(listenIndex); };
+  if(listenPlaying)playSentence(listenIndex);
 }
-
-function addScore(correct) {
-  if (correct) {
-    streak++;
-    totalScore += 10 + streak * 2;
-  } else {
-    streak = 0;
-  }
-  updateScoreBar();
+function fmtSentence(item){
+  let h=item.c;
+  if(item.j)h+=`<br><span class="jp-inline">🔊 日文：${item.j}</span>`;
+  return h;
 }
-
-// ============ 渲染函數 ============
-function render() {
-  const content = document.getElementById('content');
-  if (currentMode === 'read') renderRead(content);
-  else if (currentMode === 'listen') renderQuiz(content, 'listen');
-  else if (currentMode === 'speak') renderSpeak(content);
-  else if (currentMode === 'write') renderWrite(content);
-  else if (currentMode === 'grammar') renderGrammar(content);
+function toggleListen(){
+  if(listenPlaying){stopListen();renderListen(document.getElementById('content'));}
+  else{listenPlaying=true;renderListen(document.getElementById('content'));playSentence(listenIndex);}
 }
+function playSentence(idx){
+  const lesson=LESSONS[currentLesson];
+  if(idx>=lesson.tutorial.length){listenPlaying=false;listenIndex=0;renderListen(document.getElementById('content'));return;}
+  listenIndex=idx;
+  const item=lesson.tutorial[idx];
+  const sEl=document.getElementById('tutSentence');
+  const pEl=document.getElementById('tutProgress');
+  const cEl=document.getElementById('tutCounter');
+  if(sEl){sEl.innerHTML=fmtSentence(item);sEl.classList.add('active-line');pEl.style.width=((idx)/lesson.tutorial.length)*100+'%';cEl.textContent=`第 ${idx+1} / ${lesson.tutorial.length} 句`;}
+  const afterCantonese=()=>{
+    if(item.j)speak(item.j,'ja-JP',()=>afterAll());
+    else afterAll();
+  };
+  const afterAll=()=>{
+    if(!listenPlaying)return;
+    listenTimer=setTimeout(()=>{
+      if(!listenPlaying)return;
+      if(idx+1<lesson.tutorial.length)playSentence(idx+1);
+      else{listenPlaying=false;listenIndex=0;renderListen(document.getElementById('content'));}
+    },450);
+  };
+  speak(item.c,'zh-HK',afterCantonese);
+}
+function prevSentence(){stopListen();listenIndex=Math.max(0,listenIndex-1);renderListen(document.getElementById('content'));}
+function nextSentence(){stopListen();listenIndex=Math.min(LESSONS[currentLesson].tutorial.length-1,listenIndex+1);renderListen(document.getElementById('content'));}
+function repeatSentence(){stopListen();listenPlaying=true;renderListen(document.getElementById('content'));playSentence(listenIndex);}
+function jumpTo(idx){stopListen();listenPlaying=true;listenIndex=idx;renderListen(document.getElementById('content'));playSentence(idx);}
 
-// ---- 讀 ----
-function renderRead(el) {
-  const data = vocabData[currentLesson];
-  el.innerHTML = `
-    <div class="section-title">📖 第${currentLesson}課 單字（${data.length}個）</div>
-    <p style="color:#888;font-size:0.9em;margin-bottom:16px;">點擊卡片朗讀發音 🔊</p>
+/* ================= 看教程 ================= */
+function renderRead(el){
+  const lesson=LESSONS[currentLesson];
+  el.innerHTML=`
+    <div class="section-title">📖 第${currentLesson}課 生字表</div>
+    <p style="color:#888;font-size:.85em;margin-bottom:10px;">點擊卡片朗讀日文發音 🔊</p>
     <div class="vocab-grid">
-      ${data.map((v, i) => `
-        <div class="vocab-card" onclick="speak('${v.jp.replace(/'/g, "\\'")}')">
-          <button class="speak-btn" onclick="event.stopPropagation();speak('${v.jp.replace(/'/g, "\\'")}')">🔊</button>
+      ${lesson.vocab.map(v=>`
+        <div class="vocab-card" onclick="speak('${esc(v.jp)}','ja-JP')">
+          <button class="speak-mini" onclick="event.stopPropagation();speak('${esc(v.jp)}','ja-JP')">🔊</button>
           <div class="vocab-jp">${v.jp}</div>
           <div class="vocab-ro">${v.ro}</div>
           <div class="vocab-cn">${v.cn}</div>
-        </div>
-      `).join('')}
+        </div>`).join('')}
     </div>
-  `;
+    <div class="section-title" style="margin-top:20px;">📝 第${currentLesson}課 文法重點</div>
+    <div class="grammar-list">
+      ${lesson.grammar.map(g=>`
+        <div class="grammar-item" onclick="speak('${esc(g.e.split('<br>')[0])}','ja-JP')">
+          <div class="g-pattern">${g.p}</div>
+          <div class="g-meaning">→ ${g.m}</div>
+          <div class="g-example">${g.e}</div>
+        </div>`).join('')}
+    </div>`;
 }
+function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 
-// ---- 聽（聽音選日文） ----
-function renderQuiz(el, type) {
-  if (!quizState || quizState.type !== type || quizState.lesson !== currentLesson) {
-    startQuiz(type);
-  }
+/* ================= 做練習 ================= */
+let quizState=null;
+function renderQuiz(el){
+  if(!quizState||quizState.lesson!==currentLesson)startQuiz(currentLesson);
   drawQuiz(el);
 }
-
-function startQuiz(type) {
-  const pool = vocabData[currentLesson];
-  const questions = shuffle(pool).slice(0, Math.min(10, pool.length));
-  quizState = {
-    type: type,
-    lesson: currentLesson,
-    questions: questions,
-    index: 0,
-    correctCount: 0,
-    answered: false
-  };
+function startQuiz(lid){
+  const raw=LESSONS[lid].quiz.slice();
+  quizState={lesson:lid,questions:shuffle(raw),index:0,answered:false,correctInThisQuiz:0};
 }
-
-function drawQuiz(el) {
-  const q = quizState;
-  if (q.index >= q.questions.length) {
-    drawResult(el);
-    return;
-  }
-  const item = q.questions[q.index];
-  const pool = vocabData[currentLesson];
-  const otherOptions = shuffle(pool.filter(v => v.jp !== item.jp)).slice(0, 3);
-  const options = shuffle([item, ...otherOptions]);
-
-  let questionHTML = '';
-  if (q.type === 'listen') {
-    questionHTML = `
-      <div class="question-label">👂 聽發音，選出正確的日文</div>
-      <button class="big-play-btn" onclick="speak('${item.jp.replace(/'/g, "\\'")}')">🔊</button>
-      <div style="margin-top:16px;color:#999;font-size:0.85em;">（可以重複點擊播放）</div>
-    `;
-  }
-
-  el.innerHTML = `
-    <div class="quiz-box">
-      <div class="quiz-progress">
-        <span>第 ${q.index + 1} / ${q.questions.length} 題</span>
-        <div class="progress-bar"><div class="progress-fill" style="width:${(q.index / q.questions.length) * 100}%"></div></div>
-        <span>✅ ${q.correctCount}</span>
-      </div>
-      <div class="question-card">
-        ${questionHTML}
-      </div>
-      <div class="options" id="options">
-        ${options.map((opt, i) => `
-          <button class="option-btn" data-jp="${opt.jp}" onclick="checkAnswer(this, '${opt.jp.replace(/'/g, "\\'")}', '${item.jp.replace(/'/g, "\\'")}', '${q.type}')">${opt.jp}</button>
-        `).join('')}
-      </div>
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function drawQuiz(el){
+  const q=quizState;
+  if(q.index>=q.questions.length){drawResult(el);return;}
+  const item=q.questions[q.index];
+  const typeLabel={mc:'選擇題',fill:'填空題',trans:'翻譯題',reorder:'重組題',match:'配對題',fix:'改錯題',qa:'問答題',conv:'會話題',tf:'是非題',combo:'連連看',apply:'應用題'}[item.t]||'題目';
+  el.innerHTML=`
+    <div class="quiz-wrap">
+      <div class="quiz-prog"><span>第 ${q.index+1} / ${q.questions.length} 題</span><div class="qbar"><div class="qbar-fill" style="width:${(q.index/q.questions.length)*100}%"></div></div><span>✅ ${q.correctInThisQuiz}</span></div>
+      <div class="qcard"><div class="qtag">${typeLabel}</div><div class="qtext">${item.q}</div></div>
+      <div class="options" id="options">${item.o.map((opt,i)=>`<button class="opt" data-i="${i}" onclick="checkAnswer(${i})">${opt}</button>`).join('')}</div>
       <div id="feedback"></div>
-    </div>
-  `;
+    </div>`;
 }
-
-function checkAnswer(btn, chosen, correct, type) {
-  if (quizState.answered) return;
-  quizState.answered = true;
-  const buttons = document.querySelectorAll('#options .option-btn');
-  const isCorrect = chosen === correct;
-  buttons.forEach(b => {
-    b.disabled = true;
-    if (b.dataset.jp === correct) b.classList.add('correct');
-    else if (b === btn) b.classList.add('wrong');
-  });
-  const item = vocabData[quizState.lesson].find(v => v.jp === correct);
-  const fb = document.getElementById('feedback');
-  if (isCorrect) {
-    quizState.correctCount++;
-    addScore(true);
-    fb.innerHTML = `<div class="feedback correct">
-      <div class="fb-title">✅ 答對了！ +${10 + streak * 2} 分</div>
-      <div><b>${item.jp}</b>（${item.ro}）＝ ${item.cn}</div>
-    </div>`;
-  } else {
-    addScore(false);
-    fb.innerHTML = `<div class="feedback wrong">
-      <div class="fb-title">❌ 答錯了</div>
-      <div>正確答案：<b>${item.jp}</b>（${item.ro}）＝ ${item.cn}</div>
-    </div>`;
+function checkAnswer(chosen){
+  if(quizState.answered)return;
+  quizState.answered=true;
+  const q=quizState,item=q.questions[q.index];
+  const isCorrect=chosen===item.a;
+  document.querySelectorAll('#options .opt').forEach((b,i)=>{b.disabled=true;if(i===item.a)b.classList.add('correct');else if(i===chosen)b.classList.add('wrong');});
+  const fb=document.getElementById('feedback');
+  if(isCorrect){
+    q.correctInThisQuiz++;correctCount++;streak++;
+    const gain=10+Math.min(streak*2,20);totalScore+=gain;beep('correct');
+    fb.innerHTML=`<div class="fb correct"><div class="fb-title">✅ 答對了！ +${gain} 分（連對 ${streak}）</div><div class="fb-exp"><b>詳細解釋：</b>${item.e}</div></div>`;
+  }else{
+    streak=0;beep('wrong');
+    fb.innerHTML=`<div class="fb wrong"><div class="fb-title">❌ 答錯了</div><div class="fb-exp"><b>正確答案：</b>${item.o[item.a]}</div><div class="fb-exp" style="margin-top:5px;"><b>詳細解釋：</b>${item.e}</div></div>`;
   }
-  // 朗讀正確答案
-  setTimeout(() => speak(correct), 300);
-  // 下一題按鈕
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'submit-btn';
-  nextBtn.textContent = quizState.index < quizState.questions.length - 1 ? '下一題 →' : '查看結果 →';
-  nextBtn.onclick = () => {
-    quizState.index++;
-    quizState.answered = false;
-    drawQuiz(document.getElementById('content'));
-  };
-  fb.appendChild(nextBtn);
+  updateScoreBar();
+  if(item.o[item.a]&&/[\u3040-\u30ff\u4e00-\u9faf]/.test(item.o[item.a]))setTimeout(()=>speak(item.o[item.a],'ja-JP'),250);
+  const nb=document.createElement('button');nb.className='next-btn';
+  nb.textContent=q.index<q.questions.length-1?'下一題 →':'查看結果 →';
+  nb.onclick=()=>{q.index++;q.answered=false;drawQuiz(document.getElementById('content'));document.getElementById('content').scrollIntoView({behavior:'smooth',block:'start'});};
+  fb.appendChild(nb);
+}
+function drawResult(el){
+  const q=quizState,total=q.questions.length,c=q.correctInThisQuiz,pct=c/total;
+  let emoji,msg;
+  if(pct===1){emoji='🏆';msg='太厲害啦！全對！你係日文天才！';}
+  else if(pct>=0.8){emoji='🎉';msg='好叻呀！繼續保持！';}
+  else if(pct>=0.6){emoji='💪';msg='唔錯喔！再複習一下會更好！';}
+  else{emoji='📚';msg='唔好灰心，睇多幾次教程再嚟挑戰！';}
+  el.innerHTML=`<div class="result-screen"><div class="result-emoji">${emoji}</div><div class="result-score">${c} / ${total}</div><div class="result-msg">${msg}</div><button class="restart-btn" onclick="startQuiz(${currentLesson});drawQuiz(document.getElementById('content'))">🔄 再挑戰一次</button></div>`;
 }
 
-function drawResult(el) {
-  const q = quizState;
-  const percent = q.correctCount / q.questions.length;
-  let emoji, msg;
-  if (percent === 1) { emoji = '🏆'; msg = '太厲害了！全對！你根本是日文天才！'; }
-  else if (percent >= 0.8) { emoji = '🎉'; msg = '很棒！繼續保持！'; }
-  else if (percent >= 0.6) { emoji = '💪'; msg = '不錯喔！再複習一下會更好！'; }
-  else { emoji = '📚'; msg = '別灰心，多看幾次卡片再來挑戰！'; }
-
-  el.innerHTML = `
-    <div class="result-screen">
-      <div class="result-emoji">${emoji}</div>
-      <div class="result-score">${q.correctCount} / ${q.questions.length}</div>
-      <div class="result-msg">${msg}</div>
-      <button class="submit-btn" style="max-width:300px;margin:0 auto;" onclick="startQuiz('${q.type}');drawQuiz(document.getElementById('content'))">🔄 再挑戰一次</button>
-    </div>
-  `;
-}
-
-// ---- 說 ----
-function renderSpeak(el) {
-  const data = vocabData[currentLesson];
-  if (speakIndex >= data.length) speakIndex = 0;
-  const item = data[speakIndex];
-  el.innerHTML = `
-    <div class="section-title">🗣️ 說 第${currentLesson}課（第 ${speakIndex + 1} / ${data.length} 個）</div>
-    <div class="speak-card">
-      <div class="speak-jp">${item.jp}</div>
-      <div class="speak-ro">${item.ro}</div>
-      <div class="speak-cn">${item.cn}</div>
-      <button class="big-play-btn" onclick="speak('${item.jp.replace(/'/g, "\\'")}')">🔊</button>
-      <p style="color:#888;margin-top:16px;font-size:0.9em;">👆 點擊播放，跟著大聲朗讀吧！</p>
-      <div class="speak-nav">
-        <button class="nav-btn" onclick="speakNav(-1)" ${speakIndex === 0 ? 'disabled' : ''}>← 上一個</button>
-        <button class="nav-btn" onclick="speakNav(1)">下一個 →</button>
-      </div>
-    </div>
-  `;
-}
-
-function speakNav(dir) {
-  const data = vocabData[currentLesson];
-  speakIndex += dir;
-  if (speakIndex < 0) speakIndex = 0;
-  if (speakIndex >= data.length) speakIndex = data.length - 1;
-  renderSpeak(document.getElementById('content'));
-}
-
-// ---- 寫 ----
-function renderWrite(el) {
-  if (!quizState || quizState.type !== 'write' || quizState.lesson !== currentLesson) {
-    const pool = vocabData[currentLesson];
-    const questions = shuffle(pool).slice(0, Math.min(10, pool.length));
-    quizState = {
-      type: 'write',
-      lesson: currentLesson,
-      questions: questions,
-      index: 0,
-      correctCount: 0,
-      answered: false
-    };
-  }
-  const q = quizState;
-  if (q.index >= q.questions.length) { drawResult(el); return; }
-  const item = q.questions[q.index];
-
-  el.innerHTML = `
-    <div class="quiz-box">
-      <div class="quiz-progress">
-        <span>第 ${q.index + 1} / ${q.questions.length} 題</span>
-        <div class="progress-bar"><div class="progress-fill" style="width:${(q.index / q.questions.length) * 100}%"></div></div>
-        <span>✅ ${q.correctCount}</span>
-      </div>
-      <div class="question-card">
-        <div class="question-label">✍️ 看中文，寫出日文（可輸入日文或羅馬字）</div>
-        <div class="question-text" style="color:#c0392b;">${item.cn}</div>
-        <div class="question-sub">${item.ro}</div>
-      </div>
-      <input type="text" class="write-input" id="writeInput" placeholder="在這裡輸入日文…" autocomplete="off">
-      <button class="submit-btn" id="submitWrite" onclick="checkWrite()">確認答案</button>
-      <div id="feedback"></div>
-    </div>
-  `;
-  const input = document.getElementById('writeInput');
-  input.focus();
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') checkWrite(); });
-}
-
-function checkWrite() {
-  if (quizState.answered) return;
-  const input = document.getElementById('writeInput');
-  const userAns = input.value.trim().toLowerCase();
-  if (!userAns) return;
-  quizState.answered = true;
-  const item = quizState.questions[quizState.index];
-  // 比對：接受日文或羅馬字（忽略空格、大小寫）
-  const normalize = s => s.replace(/\s+/g, '').toLowerCase();
-  const isCorrect = normalize(userAns) === normalize(item.jp) || normalize(userAns) === normalize(item.ro);
-  input.disabled = true;
-  document.getElementById('submitWrite').disabled = true;
-
-  const fb = document.getElementById('feedback');
-  if (isCorrect) {
-    quizState.correctCount++;
-    addScore(true);
-    fb.innerHTML = `<div class="feedback correct">
-      <div class="fb-title">✅ 答對了！ +${10 + streak * 2} 分</div>
-      <div>正確答案：<b>${item.jp}</b>（${item.ro}）</div>
-    </div>`;
-  } else {
-    addScore(false);
-    fb.innerHTML = `<div class="feedback wrong">
-      <div class="fb-title">❌ 答錯了</div>
-      <div>你的答案：${userAns}</div>
-      <div>正確答案：<b>${item.jp}</b>（${item.ro}）＝ ${item.cn}</div>
-    </div>`;
-  }
-  setTimeout(() => speak(item.jp), 300);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'submit-btn';
-  nextBtn.textContent = quizState.index < quizState.questions.length - 1 ? '下一題 →' : '查看結果 →';
-  nextBtn.onclick = () => {
-    quizState.index++;
-    quizState.answered = false;
-    renderWrite(document.getElementById('content'));
-  };
-  fb.appendChild(nextBtn);
-}
-
-// ---- 文法 ----
-function renderGrammar(el) {
-  const data = grammarData[currentLesson];
-  el.innerHTML = `
-    <div class="section-title">📝 第${currentLesson}課 文法重點</div>
-    <div class="grammar-list">
-      ${data.map(g => `
-        <div class="grammar-item">
-          <div class="grammar-pattern">${g.pattern}</div>
-          <div class="grammar-meaning">→ ${g.meaning}</div>
-          <div class="grammar-example">${g.example}</div>
-        </div>
-      `).join('')}
-    </div>
-  `;
-}
-
-// ============ 事件綁定 ============
-document.getElementById('lessonTabs').addEventListener('click', e => {
-  if (!e.target.classList.contains('tab-btn')) return;
-  document.querySelectorAll('#lessonTabs .tab-btn').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
-  currentLesson = parseInt(e.target.dataset.lesson);
-  speakIndex = 0;
-  quizState = null;
-  render();
-});
-
-document.getElementById('modeTabs').addEventListener('click', e => {
-  if (!e.target.classList.contains('tab-btn')) return;
-  document.querySelectorAll('#modeTabs .tab-btn').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
-  currentMode = e.target.dataset.mode;
-  quizState = null;
-  render();
-});
-
-// ============ 初始化 ============
+/* ================= 啟動 ================= */
+initLessonBar();
 updateScoreBar();
 render();
 </script>
