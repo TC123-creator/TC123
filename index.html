@@ -1201,19 +1201,72 @@ function playSentence(idx){
   const pEl=document.getElementById('tutProgress');
   const cEl=document.getElementById('tutCounter');
   if(sEl){sEl.innerHTML=fmtSentence(item);sEl.classList.add('active-line');pEl.style.width=((idx)/lesson.tutorial.length)*100+'%';cEl.textContent=`第 ${idx+1} / ${lesson.tutorial.length} 句`;}
-  const afterCantonese=()=>{
-    if(item.j)speak(item.j,'ja-JP',()=>afterAll());
-    else afterAll();
-  };
-  const afterAll=()=>{
+
+  // 🔑 中日混合朗讀：」內日文 + 羅馬字用日文語音，其餘中文用廣東話語音
+  speakMixed(item.c, ()=>{
     if(!listenPlaying)return;
     listenTimer=setTimeout(()=>{
       if(!listenPlaying)return;
       if(idx+1<lesson.tutorial.length)playSentence(idx+1);
       else{listenPlaying=false;listenIndex=0;renderListen(document.getElementById('content'));}
     },400);
-  };
-  speak(item.c,'zh-HK',afterCantonese);
+  });
+}
+
+/* 🔑 新增：中日混合朗讀（假名 + 羅馬字 → 日文語音，中文 → 廣東話語音） */
+function speakMixed(text, onEnd){
+  const parts=[];
+  let i=0;
+  const n=text.length;
+  let buf='';
+
+  function flush(){
+    if(buf.trim()) parts.push({text:buf, lang:'zh-HK'});
+    buf='';
+  }
+
+  while(i<n){
+    const ch=text[i];
+
+    // 「」塊
+    if(ch==='「'){
+      flush();
+      let j=text.indexOf('」', i+1);
+      if(j===-1) j=n;
+      const inner=text.slice(i+1, j);
+      const hasKana=/[\u3040-\u30FF]/.test(inner);
+      const isRomaji=/^[a-zA-Z\s]+$/.test(inner);
+      const lang=(hasKana||isRomaji)?'ja-JP':'zh-HK';
+      if(inner.trim()) parts.push({text:inner, lang});
+      i=j+1;
+      continue;
+    }
+
+    // 拉丁字母串（羅馬字）→ 用日文語音讀
+    if(/[a-zA-Z]/.test(ch)){
+      flush();
+      let j=i;
+      while(j<n && /[a-zA-Z\s]/.test(text[j])) j++;
+      const word=text.slice(i, j).trim();
+      if(word) parts.push({text:word, lang:'ja-JP'});
+      i=j;
+      continue;
+    }
+
+    // 其他中文 → 廣東話
+    buf+=ch;
+    i++;
+  }
+  flush();
+
+  let k=0;
+  function playNext(){
+    if(k>=parts.length){ if(onEnd) onEnd(); return; }
+    const p=parts[k++];
+    if(!p.text.trim()){ playNext(); return; }
+    speak(p.text, p.lang, playNext);
+  }
+  playNext();
 }
 function prevSentence(){stopListen();listenIndex=Math.max(0,listenIndex-1);renderListen(document.getElementById('content'));}
 function nextSentence(){stopListen();listenIndex=Math.min(LESSONS[currentLesson].tutorial.length-1,listenIndex+1);renderListen(document.getElementById('content'));}
