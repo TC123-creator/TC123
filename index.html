@@ -185,6 +185,21 @@ hr.sep{border:none; border-top:1px dashed var(--border); margin:18px 0;}
   .ctrl-row{gap:6px;}
   button{padding:6px 10px; font-size:13px;}
 }
+
+/* ===== 課堂快速導航 ===== */
+.lesson-nav{
+  display:flex; gap:6px; overflow-x:auto; white-space:nowrap;
+  background:#fff; padding:8px 12px; border-bottom:1px solid var(--border);
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.lesson-nav a{
+  font-size:13px; padding:5px 12px; border-radius:6px;
+  background:var(--accent-l); color:var(--accent);
+  text-decoration:none; font-weight:700; flex-shrink:0;
+}
+.lesson-nav a:hover{ background:var(--accent); color:#fff; }
+/* 跳轉後避免被頂部 sticky 控制面板遮住標題 */
+.lesson-block, .story-block{ scroll-margin-top:170px; }
 </style>
 </head>
 <body>
@@ -194,6 +209,18 @@ hr.sep{border:none; border-top:1px dashed var(--border); margin:18px 0;}
   <p>單字・文法・MC・漢字解釋・其他練習・長篇故事（可續寫）</p>
 </header>
 
+<nav class="lesson-nav">
+  <a href="#lesson-1">第1課</a>
+  <a href="#lesson-2">第2課</a>
+  <a href="#lesson-3">第3課</a>
+  <a href="#lesson-4">第4課</a>
+  <a href="#lesson-5">第5課</a>
+  <a href="#lesson-6">第6課</a>
+  <a href="#lesson-7">第7課</a>
+  <a href="#lesson-8">第8課</a>
+  <a href="#story">故事</a>
+</nav>
+  
 <div class="warn-box" id="warnBox"></div>
 
 <!-- ===== 控制面板 ===== -->
